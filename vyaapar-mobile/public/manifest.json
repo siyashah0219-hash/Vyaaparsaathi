@@ -1,0 +1,16 @@
+{
+  "short_name": "VypaarSaathi",
+  "name": "Vypaar Saathi Rural AI",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#064e3b",
+  "theme_color": "#064e3b",
+  "display": "standalone",
+  "orientation": "portrait"
+}
