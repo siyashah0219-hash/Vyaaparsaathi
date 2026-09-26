@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export const AdvisorPage: React.FC = () => {
-  const { profile, financialResult, financialInput, language } = useApp();
+  const { profile, financialResult, financialInput, language, setActiveTab } = useApp();
 
   const [inputMessage, setInputMessage] = useState<string>('');
   const [isListening, setIsListening] = useState<boolean>(false);
@@ -158,161 +158,273 @@ export const AdvisorPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 animate-fadeIn max-w-5xl mx-auto">
+    <div className="space-y-6 animate-fadeIn w-full max-w-[1820px] mx-auto">
       
       {/* Header */}
-      <div className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-sm flex items-center justify-between">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-teal-800 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-700">
             Interactive Voice & Text Assistant
           </span>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-emerald-950 mt-1">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-emerald-950 dark:text-slate-100 mt-2">
             Talk to VYPAAR SAATHI AI Advisor
           </h1>
-          <p className="text-gray-600 text-xs mt-0.5">
+          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">
             Ask in Hindi, Marathi, or English. Audio read-aloud available for all responses.
           </p>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs text-emerald-950 font-bold">
-          <Sparkles className="h-4 w-4 text-amber-500" /> Tailored to {profile.name}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 bg-emerald-50 dark:bg-slate-800 border border-emerald-200 dark:border-slate-700 px-3.5 py-2 rounded-2xl text-xs text-emerald-950 dark:text-slate-200 font-bold">
+            <Sparkles className="h-4 w-4 text-amber-500" /> Tailored to {profile.name} ({profile.district})
+          </div>
+          <button
+            onClick={() => setActiveTab('profile')}
+            className="hidden sm:inline-flex text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline"
+          >
+            Edit Profile
+          </button>
         </div>
       </div>
 
-      {/* Main Chat Interface */}
-      <div className="bg-white rounded-3xl border border-emerald-200 shadow-md flex flex-col h-[580px] overflow-hidden">
-        
-        {/* Chat Header */}
-        <div className="bg-emerald-900 text-white p-4 px-6 flex items-center justify-between border-b border-emerald-800">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xl bg-amber-400 text-emerald-950 flex items-center justify-center font-bold">
-              <Bot className="h-5 w-5" />
+      {/* Widescreen 12-Column Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+        {/* Main Chat Interface (8 Columns on xl/2xl) */}
+        <div className="xl:col-span-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-md flex flex-col h-[520px] lg:h-[560px] 2xl:h-[680px] overflow-hidden transition-colors">
+          
+          {/* Chat Header */}
+          <div className="bg-gradient-to-r from-emerald-900 via-emerald-800 to-green-900 text-white p-4 px-6 flex items-center justify-between border-b border-emerald-800 shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-2xl bg-white/10 border border-white/20 text-amber-300 flex items-center justify-center font-bold">
+                <Bot className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="font-bold text-sm text-white">VYPAAR SAATHI AI Advisor</p>
+                <p className="text-[11px] text-emerald-200 flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" /> Live External API Connected ({profile.district})
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-bold text-sm text-white">VYPAAR SAATHI AI Advisor</p>
-              <p className="text-[11px] text-emerald-200 flex items-center gap-1">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" /> Live External API Connected ({profile.district})
-              </p>
+
+            <div className="flex items-center gap-2">
+              <div className="text-xs text-amber-300 font-bold bg-emerald-950/60 px-3 py-1 rounded-xl border border-emerald-700">
+                Language: {language}
+              </div>
             </div>
           </div>
 
-          <div className="text-xs text-amber-300 font-bold bg-emerald-950/60 px-3 py-1 rounded-lg border border-emerald-700">
-            Language: {language}
-          </div>
-        </div>
+          {/* Message Stream */}
+          <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-slate-50/50 dark:bg-slate-950/40">
+            {messages.map((msg) => {
+              const isUser = msg.sender === 'user';
+              const isSpeaking = isSpeakingId === msg.id;
 
-        {/* Message Stream */}
-        <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 bg-emerald-50/30">
-          {messages.map((msg) => {
-            const isUser = msg.sender === 'user';
-            const isSpeaking = isSpeakingId === msg.id;
-
-            return (
-              <div
-                key={msg.id}
-                className={`flex gap-3 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse' : 'mr-auto'}`}
-              >
+              return (
                 <div
-                  className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 text-xs font-bold ${
-                    isUser ? 'bg-amber-400 text-emerald-950' : 'bg-emerald-800 text-white'
-                  }`}
+                  key={msg.id}
+                  className={`flex gap-3 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse' : 'mr-auto'}`}
                 >
-                  {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
-                </div>
-
-                <div className="space-y-2">
                   <div
-                    className={`rounded-2xl p-4 text-xs sm:text-sm leading-relaxed shadow-2xs relative ${
-                      isUser
-                        ? 'bg-emerald-800 text-white rounded-tr-none'
-                        : 'bg-white text-emerald-950 border border-emerald-200 rounded-tl-none'
+                    className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold shadow-xs ${
+                      isUser ? 'bg-amber-400 text-emerald-950' : 'bg-emerald-800 text-white'
                     }`}
                   >
-                    <p>{msg.text}</p>
+                    {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                  </div>
 
-                    {!isUser && (
-                      <div className="pt-2 flex items-center justify-between border-t border-gray-100 mt-2 text-[10px]">
-                        <span className="text-gray-400">{msg.timestamp}</span>
-                        <button
-                          onClick={() => speakText(msg.id, msg.text)}
-                          className={`flex items-center gap-1 px-2 py-1 rounded font-bold transition-colors ${
-                            isSpeaking
-                              ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                              : 'text-emerald-700 hover:bg-emerald-50'
-                          }`}
-                        >
-                          <Volume2 className="h-3.5 w-3.5" />
-                          <span>{isSpeaking ? 'Stop Audio' : 'Listen Audio'}</span>
-                        </button>
+                  <div className="space-y-2">
+                    <div
+                      className={`rounded-2xl p-4 text-xs sm:text-sm leading-relaxed shadow-xs relative ${
+                        isUser
+                          ? 'bg-gradient-to-r from-emerald-700 to-green-700 text-white rounded-tr-xs'
+                          : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-tl-xs'
+                      }`}
+                    >
+                      <p className="whitespace-pre-line">{msg.text}</p>
+
+                      {!isUser && (
+                        <div className="pt-2 flex items-center justify-between border-t border-slate-100 dark:border-slate-700 mt-2 text-[10px]">
+                          <span className="text-slate-400">{msg.timestamp}</span>
+                          <button
+                            onClick={() => speakText(msg.id, msg.text)}
+                            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg font-bold transition-colors ${
+                              isSpeaking
+                                ? 'bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300'
+                                : 'text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-700'
+                            }`}
+                          >
+                            <Volume2 className="h-3.5 w-3.5" />
+                            <span>{isSpeaking ? 'Stop Audio' : 'Listen Audio'}</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Prompt Action Chips */}
+                    {msg.suggestedActions && msg.suggestedActions.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {msg.suggestedActions.map((act, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => {
+                              const lower = act.toLowerCase();
+                              if (lower.includes('scheme') || lower.includes('pmfme')) {
+                                setActiveTab('schemes');
+                              } else if (lower.includes('budget') || lower.includes('emi')) {
+                                setActiveTab('financial-plan');
+                              } else if (lower.includes('risk')) {
+                                setActiveTab('risk-analysis');
+                              } else if (lower.includes('expert')) {
+                                setActiveTab('expert-session');
+                              } else {
+                                handleSendMessage(act);
+                              }
+                            }}
+                            className="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-emerald-200 dark:border-slate-700 px-3 py-1 rounded-full shadow-2xs transition-all flex items-center gap-1 hover:scale-102"
+                          >
+                            <Lightbulb className="h-3 w-3 text-amber-500" /> {act}
+                          </button>
+                        ))}
                       </div>
                     )}
                   </div>
-
-                  {/* Prompt Action Chips */}
-                  {msg.suggestedActions && msg.suggestedActions.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {msg.suggestedActions.map((act, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleSendMessage(act)}
-                          className="text-[11px] font-bold text-emerald-800 bg-white hover:bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full shadow-2xs transition-colors flex items-center gap-1"
-                        >
-                          <Lightbulb className="h-3 w-3 text-amber-500" /> {act}
-                        </button>
-                      ))}
-                    </div>
-                  )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
 
-          {isThinking && (
-            <div className="flex gap-3 max-w-[85%] mr-auto items-center text-xs text-emerald-800 bg-white border border-emerald-200 rounded-2xl p-3 px-4 shadow-2xs">
-              <RefreshCw className="h-4 w-4 animate-spin text-emerald-700" />
-              <span>Analyzing market context and generating response...</span>
+            {isThinking && (
+              <div className="flex gap-3 max-w-[85%] mr-auto items-center text-xs text-emerald-800 dark:text-emerald-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 px-4 shadow-2xs">
+                <RefreshCw className="h-4 w-4 animate-spin text-emerald-700 dark:text-emerald-400" />
+                <span>Analyzing market context and generating response...</span>
+              </div>
+            )}
+          </div>
+
+          {/* Input Controls Footer */}
+          <div className="bg-white dark:bg-slate-900 p-3 sm:p-4 border-t border-slate-200 dark:border-slate-800 space-y-2 shrink-0">
+            {isListening && (
+              <div className="bg-amber-100 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-300 text-xs px-3 py-1.5 rounded-xl flex items-center gap-2 animate-pulse">
+                <Mic className="h-4 w-4 text-red-600" /> Listening to your voice... Speak now in {language}.
+              </div>
+            )}
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleListening}
+                className={`p-3 rounded-2xl border transition-all ${
+                  isListening
+                    ? 'bg-red-600 text-white border-red-700 animate-pulse'
+                    : 'bg-amber-100 dark:bg-slate-800 text-amber-900 dark:text-amber-400 border-amber-300 dark:border-slate-700 hover:bg-amber-200 dark:hover:bg-slate-700'
+                }`}
+                title="Voice Input (Mic)"
+              >
+                {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5 text-amber-800 dark:text-amber-400" />}
+              </button>
+
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                placeholder={`Ask your question in ${language}... (or tap mic to speak)`}
+                className="flex-1 px-4 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15"
+              />
+
+              <button
+                onClick={() => handleSendMessage()}
+                disabled={!inputMessage.trim() || isThinking}
+                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-bold text-sm disabled:opacity-40 transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-700/20"
+              >
+                <Send className="h-4 w-4" /> Send
+              </button>
             </div>
-          )}
+          </div>
+
         </div>
 
-        {/* Input Controls Footer */}
-        <div className="bg-white p-3 sm:p-4 border-t border-emerald-200 space-y-2">
-          {isListening && (
-            <div className="bg-amber-100 border border-amber-300 text-amber-900 text-xs px-3 py-1.5 rounded-lg flex items-center gap-2 animate-pulse">
-              <Mic className="h-4 w-4 text-red-600" /> Listening to your voice... Speak now in {language}.
+        {/* Right Sidebar: Advisor Intelligence & Profile Context Panel (4 Columns on xl/2xl) */}
+        <div className="xl:col-span-4 space-y-5 flex flex-col justify-between">
+          
+          {/* Profile Overview Card */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <span className="text-xs font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-emerald-600" /> Active Enterprise Profile
+              </span>
+              <span className="text-[10px] font-bold text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-800">
+                {profile.businessType === 'new' ? 'New Setup' : 'Expansion'}
+              </span>
             </div>
-          )}
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={toggleListening}
-              className={`p-3 rounded-xl border transition-all ${
-                isListening
-                  ? 'bg-red-600 text-white border-red-700 animate-pulse'
-                  : 'bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200'
-              }`}
-              title="Voice Input (Mic)"
-            >
-              {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5 text-amber-800" />}
-            </button>
-
-            <input
-              type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder={`Ask your question in ${language}... (or tap mic to speak)`}
-              className="flex-1 px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15"
-            />
-
-            <button
-              onClick={() => handleSendMessage()}
-              disabled={!inputMessage.trim() || isThinking}
-              className="px-5 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm disabled:opacity-40 transition-colors flex items-center gap-1.5"
-            >
-              <Send className="h-4 w-4" /> Send
-            </button>
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-100 dark:border-slate-700/60">
+                <span className="text-slate-400 block text-[10px]">Entrepreneur</span>
+                <strong className="text-slate-900 dark:text-slate-100 font-semibold">{profile.name}</strong>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-100 dark:border-slate-700/60">
+                <span className="text-slate-400 block text-[10px]">Location</span>
+                <strong className="text-slate-900 dark:text-slate-100 font-semibold truncate block">{profile.district}, {profile.state}</strong>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-100 dark:border-slate-700/60">
+                <span className="text-slate-400 block text-[10px]">Capital</span>
+                <strong className="text-emerald-700 dark:text-emerald-400 font-bold">₹{profile.capital.toLocaleString('en-IN')}</strong>
+              </div>
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-2xl border border-slate-100 dark:border-slate-700/60">
+                <span className="text-slate-400 block text-[10px]">Category</span>
+                <strong className="text-slate-900 dark:text-slate-100 font-semibold truncate block">{profile.businessCategory}</strong>
+              </div>
+            </div>
           </div>
+
+          {/* Rapid Ask Question Shortcuts */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <h3 className="font-serif text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Lightbulb className="h-4 w-4 text-amber-500" /> Quick Questions
+            </h3>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              Click any question to receive hyper-local guidance:
+            </p>
+
+            <div className="space-y-2">
+              {[
+                'How do I get my PM MUDRA loan approved in ' + profile.district + '?',
+                'What documents are needed for PMFME 35% subsidy?',
+                'How can I lower my monthly raw material costs?',
+                'What is the mandatory FSSAI registration process?',
+                'How do I calculate my monthly break-even sales?',
+              ].map((query, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSendMessage(query)}
+                  className="w-full text-left p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 bg-slate-50 dark:bg-slate-800/50 hover:bg-emerald-50 dark:hover:bg-slate-800 text-[11px] text-slate-700 dark:text-slate-300 font-medium transition-colors flex items-center justify-between group"
+                >
+                  <span className="truncate pr-2">{query}</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-emerald-600 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Policy & Subsidy Highlight Bulletin */}
+          <div className="bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-900 text-white rounded-3xl p-5 border border-emerald-800 shadow-md space-y-3">
+            <div className="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
+              <Sparkles className="h-4 w-4" /> Policy Intelligence
+            </div>
+            <p className="text-xs text-emerald-100 leading-relaxed">
+              Under PMFME, micro food enterprises in <strong>{profile.district}</strong> receive up to <strong>35% credit-linked capital subsidy</strong> (max ₹10 Lakh) with collateral-free bank tie-up.
+            </p>
+            <div className="pt-1 flex items-center justify-between text-[11px]">
+              <span className="text-emerald-300">Govt of India MoFPI</span>
+              <button
+                onClick={() => setActiveTab('schemes')}
+                className="text-amber-300 font-bold hover:underline inline-flex items-center gap-1"
+              >
+                View Schemes <ArrowRight className="h-3 w-3" />
+              </button>
+            </div>
+          </div>
+
         </div>
 
       </div>

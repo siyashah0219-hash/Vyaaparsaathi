@@ -1,3 +1,35 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+  <rect width="180" height="180" rx="40" fill="url(#paint0_linear)" />
+  <circle cx="90" cy="90" r="75" fill="url(#paint1_radial)" opacity="0.3" />
+  
+  <!-- Golden Sun Growth Arc -->
+  <path d="M40 130C55 85 125 85 140 130" stroke="#FBBF24" stroke-width="10" stroke-linecap="round" opacity="0.9" />
+  
+  <!-- Stem -->
+  <path d="M90 155V70" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" />
+  
+  <!-- Left Leaf (Farming) -->
+  <path d="M90 110C70 110 50 95 55 75C65 75 80 85 90 95" fill="#34D399" stroke="#ECFDF5" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Right Leaf (Business) -->
+  <path d="M90 90C110 85 130 70 125 50C115 50 100 60 90 75" fill="#FBBF24" stroke="#FEF3C7" stroke-width="6" stroke-linejoin="round" />
+  
+  <!-- Golden Apex Rupee Coin -->
+  <circle cx="90" cy="42" r="16" fill="#F59E0B" stroke="#FEF3C7" stroke-width="6" />
+  <path d="M84 37H96M84 47H94M90 35V49" stroke="#78350F" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Ground -->
+  <path d="M30 155H150" stroke="#A7F3D0" stroke-width="10" stroke-linecap="round" />
+
+  <defs>
+    <linearGradient id="paint0_linear" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#059669" />
+      <stop offset="0.5" stop-color="#047857" />
+      <stop offset="1" stop-color="#064E3B" />
+    </linearGradient>
+    <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" transform="translate(90 90) scale(75)">
+      <stop stop-color="#FBBF24" />
+      <stop offset="1" stop-color="#FBBF24" stop-opacity="0" />
+    </radialGradient>
+  </defs>
 </svg>

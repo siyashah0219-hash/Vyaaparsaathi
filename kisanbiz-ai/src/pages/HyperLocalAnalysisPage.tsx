@@ -94,60 +94,60 @@ export const HyperLocalAnalysisPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Setup Cost */}
-        <div className="bg-white rounded-2xl p-5 border border-emerald-200 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-gray-500">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-2 hover-card-lift animate-fade-in-up stagger-1">
+          <div className="flex items-center justify-between text-xs font-semibold text-gray-500 dark:text-slate-400">
             <span>Est. Setup Cost</span>
-            <IndianRupee className="h-4 w-4 text-emerald-700" />
+            <IndianRupee className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
           </div>
-          <p className="font-serif text-2xl font-bold text-emerald-950">
+          <p className="font-serif text-2xl font-bold text-emerald-950 dark:text-slate-100">
             ₹{analysis.setupCostEstimate.toLocaleString('en-IN')}
           </p>
-          <p className="text-[11px] text-emerald-700 font-medium">
+          <p className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
             Range: {analysis.setupCostRange}
           </p>
         </div>
 
         {/* Operating Cost */}
-        <div className="bg-white rounded-2xl p-5 border border-emerald-200 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-gray-500">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-2 hover-card-lift animate-fade-in-up stagger-2">
+          <div className="flex items-center justify-between text-xs font-semibold text-gray-500 dark:text-slate-400">
             <span>Est. Monthly Operating Cost</span>
-            <Building2 className="h-4 w-4 text-emerald-700" />
+            <Building2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
           </div>
-          <p className="font-serif text-2xl font-bold text-emerald-950">
+          <p className="font-serif text-2xl font-bold text-emerald-950 dark:text-slate-100">
             ₹{analysis.monthlyOperatingCost.toLocaleString('en-IN')}
           </p>
-          <p className="text-[11px] text-emerald-700 font-medium">
+          <p className="text-[11px] text-emerald-700 dark:text-emerald-400 font-medium">
             Range: {analysis.monthlyOperatingCostRange}
           </p>
         </div>
 
         {/* Customer Demand Score */}
-        <div className="bg-white rounded-2xl p-5 border border-emerald-200 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-gray-500">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-2 hover-card-lift animate-fade-in-up stagger-3">
+          <div className="flex items-center justify-between text-xs font-semibold text-gray-500 dark:text-slate-400">
             <span>Customer Demand</span>
-            <TrendingUp className="h-4 w-4 text-emerald-700" />
+            <TrendingUp className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-3xl font-bold text-emerald-950">
+            <span className="font-serif text-3xl font-bold text-emerald-950 dark:text-slate-100">
               {analysis.customerDemandScore}
             </span>
-            <span className="text-xs text-gray-500 font-bold">/ 100</span>
+            <span className="text-xs text-gray-500 dark:text-slate-400 font-bold">/ 100</span>
           </div>
-          <span className="inline-block bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded">
+          <span className="inline-block bg-emerald-100 dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">
             High Growth Potential
           </span>
         </div>
 
         {/* Competitor Intensity */}
-        <div className="bg-white rounded-2xl p-5 border border-emerald-200 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-gray-500">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-2 hover-card-lift animate-fade-in-up stagger-4">
+          <div className="flex items-center justify-between text-xs font-semibold text-gray-500 dark:text-slate-400">
             <span>Competitor Density</span>
-            <Users className="h-4 w-4 text-amber-700" />
+            <Users className="h-4 w-4 text-amber-700 dark:text-amber-400" />
           </div>
-          <p className="font-serif text-2xl font-bold text-emerald-950">
+          <p className="font-serif text-2xl font-bold text-emerald-950 dark:text-slate-100">
             {analysis.competitorIntensity}
           </p>
-          <p className="text-[11px] text-gray-600 font-medium truncate">
+          <p className="text-[11px] text-gray-600 dark:text-slate-400 font-medium truncate">
             {analysis.competitorCountEstimate}
           </p>
         </div>
@@ -155,36 +155,36 @@ export const HyperLocalAnalysisPage: React.FC = () => {
       </div>
 
       {/* LIVE MANDI COMMODITY PRICE FEED (API INTEGRATED) */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-emerald-200 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
         <div className="flex items-center justify-between">
-          <h3 className="font-serif text-xl font-bold text-emerald-950 flex items-center gap-2">
-            <Store className="h-6 w-6 text-emerald-700" /> Live Mandi Commodity Price Feed ({profile.district}, {profile.state})
+          <h3 className="font-serif text-xl font-bold text-emerald-950 dark:text-slate-100 flex items-center gap-2">
+            <Store className="h-6 w-6 text-emerald-700 dark:text-emerald-400" /> Live Mandi Commodity Price Feed ({profile.district}, {profile.state})
           </h3>
-          <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
+          <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/70 px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-800">
             Updated Today
           </span>
         </div>
 
         {loadingPrices ? (
-          <div className="py-8 text-center text-xs text-gray-500 flex items-center justify-center gap-2">
-            <RefreshCw className="h-4 w-4 animate-spin text-emerald-700" /> Loading live mandi price feeds...
+          <div className="py-8 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+            <RefreshCw className="h-4 w-4 animate-spin text-emerald-700 dark:text-emerald-400" /> Loading live mandi price feeds...
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 2xl:gap-6">
             {mandiPrices.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-200 space-y-2 text-xs"
+                className="bg-emerald-50/50 dark:bg-slate-800/70 p-4 rounded-2xl border border-emerald-200 dark:border-slate-700 space-y-2 text-xs transition-all duration-300 hover-card-lift"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-emerald-950 text-sm">{item.commodity}</span>
+                  <span className="font-bold text-emerald-950 dark:text-slate-100 text-sm">{item.commodity}</span>
                   <span
-                    className={`flex items-center gap-1 font-bold px-2 py-0.5 rounded text-[10px] ${
+                    className={`flex items-center gap-1 font-bold px-2 py-0.5 rounded text-[10px] transition-transform hover:scale-105 ${
                       item.trend === 'up'
-                        ? 'bg-emerald-100 text-emerald-800'
+                        ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300'
                         : item.trend === 'down'
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-gray-100 text-gray-700'
+                        ? 'bg-red-100 dark:bg-red-950/80 text-red-800 dark:text-red-300'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                     }`}
                   >
                     {item.trend === 'up' ? <TrendingUp className="h-3 w-3" /> : item.trend === 'down' ? <TrendingDown className="h-3 w-3" /> : null}
@@ -194,15 +194,15 @@ export const HyperLocalAnalysisPage: React.FC = () => {
 
                 <div className="flex items-baseline justify-between pt-1">
                   <div>
-                    <span className="text-gray-500 text-[10px] block">Modal Price / {item.unit}</span>
-                    <span className="font-serif text-xl font-bold text-emerald-950">
+                    <span className="text-slate-500 dark:text-slate-400 text-[10px] block">Modal Price / {item.unit}</span>
+                    <span className="font-serif text-xl font-bold text-emerald-950 dark:text-slate-100">
                       ₹{item.modalPrice.toLocaleString('en-IN')}
                     </span>
                   </div>
 
-                  <div className="text-right text-[10px] text-gray-500">
+                  <div className="text-right text-[10px] text-slate-500 dark:text-slate-400">
                     <span>Range: ₹{item.minPrice}–₹{item.maxPrice}</span>
-                    <span className="block text-emerald-800 font-semibold">{item.market}</span>
+                    <span className="block text-emerald-800 dark:text-emerald-400 font-semibold">{item.market}</span>
                   </div>
                 </div>
               </div>
@@ -215,27 +215,27 @@ export const HyperLocalAnalysisPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Target Customers */}
-        <div className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-2xs space-y-3">
-          <h3 className="font-serif text-lg font-bold text-emerald-950 flex items-center gap-2">
-            <Target className="h-5 w-5 text-emerald-700" /> Target Customer Segment
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-3 transition-colors">
+          <h3 className="font-serif text-lg font-bold text-emerald-950 dark:text-slate-100 flex items-center gap-2">
+            <Target className="h-5 w-5 text-emerald-700 dark:text-emerald-400" /> Target Customer Segment
           </h3>
-          <p className="text-xs sm:text-sm text-gray-700 leading-relaxed bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100">
+          <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-emerald-50/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-emerald-100 dark:border-slate-700">
             {analysis.targetCustomerSegment}
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Based on consumer demographics in <strong>{profile.villageCity || profile.district}</strong> and nearby village haats.
           </p>
         </div>
 
         {/* Pricing Strategy */}
-        <div className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-2xs space-y-3">
-          <h3 className="font-serif text-lg font-bold text-emerald-950 flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-amber-600" /> Recommended Pricing Strategy
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-3 transition-colors">
+          <h3 className="font-serif text-lg font-bold text-emerald-950 dark:text-slate-100 flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-amber-600 dark:text-amber-400" /> Recommended Pricing Strategy
           </h3>
-          <p className="text-xs sm:text-sm text-gray-700 leading-relaxed bg-amber-50/60 p-4 rounded-2xl border border-amber-200">
+          <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-amber-50/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-amber-200 dark:border-slate-700">
             {analysis.suggestedPricingStrategy}
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Ensures competitive positioning against established local traders while preserving profit margins.
           </p>
         </div>
@@ -243,16 +243,16 @@ export const HyperLocalAnalysisPage: React.FC = () => {
       </div>
 
       {/* Local Market Observations (Field Notes) */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-sm space-y-4">
-        <h3 className="font-serif text-xl font-bold text-emerald-950 flex items-center gap-2">
-          <Store className="h-6 w-6 text-emerald-700" /> Local Market Observations ({analysis.district}, {analysis.state})
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-emerald-200 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
+        <h3 className="font-serif text-xl font-bold text-emerald-950 dark:text-slate-100 flex items-center gap-2">
+          <Store className="h-6 w-6 text-emerald-700 dark:text-emerald-400" /> Local Market Observations ({analysis.district}, {analysis.state})
         </h3>
 
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-3">
           {analysis.marketObservations.map((obs, idx) => (
             <div
               key={idx}
-              className="flex items-start gap-3 bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 text-xs sm:text-sm text-emerald-950 font-medium"
+              className="flex items-start gap-3 bg-emerald-50/50 dark:bg-slate-800/60 p-4 rounded-2xl border border-emerald-100 dark:border-slate-700 text-xs sm:text-sm text-emerald-950 dark:text-slate-200 font-medium"
             >
               <span className="h-6 w-6 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                 {idx + 1}
@@ -312,14 +312,14 @@ export const HyperLocalAnalysisPage: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setActiveTab('financial-plan')}
-            className="bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold px-5 py-3 rounded-xl shadow-md text-xs sm:text-sm flex items-center gap-2"
+            className="shimmer-btn bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold px-5 py-3 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 text-xs sm:text-sm flex items-center gap-2 transition-all duration-200"
           >
             <Calculator className="h-4 w-4" /> Financial Plan & Calculator <ArrowRight className="h-4 w-4" />
           </button>
 
           <button
             onClick={() => setActiveTab('schemes')}
-            className="bg-emerald-800 hover:bg-emerald-700 text-white font-bold px-4 py-3 rounded-xl border border-emerald-600 text-xs sm:text-sm flex items-center gap-1.5"
+            className="bg-emerald-800 hover:bg-emerald-700 hover:scale-105 active:scale-95 text-white font-bold px-4 py-3 rounded-xl border border-emerald-600 text-xs sm:text-sm flex items-center gap-1.5 transition-all duration-200"
           >
             <Landmark className="h-4 w-4 text-amber-300" /> Govt Schemes
           </button>

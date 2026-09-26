@@ -15,7 +15,9 @@ import {
   AlertCircle,
   Building,
   Rocket,
+  Users,
 } from 'lucide-react';
+import { SliderField } from '../components/ui/SliderField';
 
 export const ProfilePage: React.FC = () => {
   const { profile, updateProfile, setActiveTab } = useApp();
@@ -91,25 +93,25 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-fadeIn">
+    <div className="max-w-5xl 2xl:max-w-6xl mx-auto space-y-8 animate-fadeIn">
       
       {/* Header */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-emerald-200 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-700">
               Interactive 5-Step Wizard
             </span>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-emerald-950 mt-2">
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-emerald-950 dark:text-slate-100 mt-2">
               Business Profile Builder
             </h1>
-            <p className="text-gray-600 text-xs sm:text-sm mt-1">
+            <p className="text-gray-600 dark:text-slate-400 text-xs sm:text-sm mt-1">
               Information entered here is stored in your session and shapes all hyper-local analyses, loan calculations, and AI responses.
             </p>
           </div>
           <div className="hidden sm:flex flex-col items-end">
-            <span className="text-xs font-bold text-emerald-800">Progress</span>
-            <span className="font-serif text-2xl font-bold text-emerald-950">
+            <span className="text-xs font-bold text-emerald-800 dark:text-emerald-400">Progress</span>
+            <span className="font-serif text-2xl font-bold text-emerald-950 dark:text-slate-100">
               {step}/5
             </span>
           </div>
@@ -117,14 +119,14 @@ export const ProfilePage: React.FC = () => {
 
         {/* Step Progress Indicators */}
         <div className="space-y-2 pt-2">
-          <div className="flex items-center justify-between text-xs font-bold text-emerald-900">
-            <span className={step >= 1 ? 'text-emerald-800' : 'text-gray-400'}>1. Personal</span>
-            <span className={step >= 2 ? 'text-emerald-800' : 'text-gray-400'}>2. Location</span>
-            <span className={step >= 3 ? 'text-emerald-800' : 'text-gray-400'}>3. Business</span>
-            <span className={step >= 4 ? 'text-emerald-800' : 'text-gray-400'}>4. Financials</span>
-            <span className={step >= 5 ? 'text-emerald-800' : 'text-gray-400'}>5. Goals</span>
+          <div className="flex items-center justify-between text-xs font-bold text-emerald-900 dark:text-slate-300">
+            <span className={step >= 1 ? 'text-emerald-800 dark:text-emerald-400' : 'text-gray-400 dark:text-slate-600'}>1. Personal</span>
+            <span className={step >= 2 ? 'text-emerald-800 dark:text-emerald-400' : 'text-gray-400 dark:text-slate-600'}>2. Location</span>
+            <span className={step >= 3 ? 'text-emerald-800 dark:text-emerald-400' : 'text-gray-400 dark:text-slate-600'}>3. Business</span>
+            <span className={step >= 4 ? 'text-emerald-800 dark:text-emerald-400' : 'text-gray-400 dark:text-slate-600'}>4. Financials</span>
+            <span className={step >= 5 ? 'text-emerald-800 dark:text-emerald-400' : 'text-gray-400 dark:text-slate-600'}>5. Goals</span>
           </div>
-          <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-200">
+          <div className="h-2.5 w-full bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden border border-gray-200 dark:border-slate-700">
             <div
               className="h-full bg-gradient-to-r from-emerald-600 to-emerald-800 transition-all duration-300 rounded-full"
               style={{ width: `${(step / 5) * 100}%` }}
@@ -134,7 +136,7 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* Main Step Card Form */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-md space-y-6">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-emerald-200 dark:border-slate-800 shadow-md space-y-6 transition-colors">
         
         {/* STEP 1: Personal & Business Status */}
         {step === 1 && (
@@ -161,6 +163,35 @@ export const ProfilePage: React.FC = () => {
                   }`}
                 />
                 {errors.name && <p className="text-xs text-red-500 mt-1 flex items-center gap-1"><AlertCircle className="h-3.5 w-3.5" /> {errors.name}</p>}
+              </div>
+
+              {/* Profile Avatar Selection */}
+              <div>
+                <label className="block text-xs font-bold text-emerald-950 dark:text-slate-200 uppercase tracking-wider mb-2">
+                  Profile Picture
+                </label>
+                <div className="flex items-center gap-3">
+                  {[
+                    { label: 'Sunita', url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&h=200&q=80' },
+                    { label: 'Ramesh', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80' },
+                    { label: 'Meena', url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=80' },
+                    { label: 'Rajesh', url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&h=200&q=80' },
+                  ].map((av) => (
+                    <button
+                      key={av.url}
+                      type="button"
+                      onClick={() => handleChange('avatarUrl', av.url)}
+                      className={`relative h-12 w-12 rounded-full overflow-hidden border-2 transition-all cursor-pointer ${
+                        formData.avatarUrl === av.url
+                          ? 'border-emerald-600 ring-2 ring-emerald-500/40 scale-105 shadow-md'
+                          : 'border-slate-200 dark:border-slate-700 hover:border-emerald-400 opacity-80 hover:opacity-100'
+                      }`}
+                      title={av.label}
+                    >
+                      <img src={av.url} alt={av.label} className="h-full w-full object-cover" />
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div>
@@ -203,16 +234,23 @@ export const ProfilePage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-emerald-950 uppercase tracking-wider mb-2">
-                  Years of Business / Farming Experience
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="50"
+                <SliderField
+                  label="Years of Business / Farming Experience"
                   value={formData.experienceYears}
-                  onChange={(e) => handleChange('experienceYears', Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15"
+                  onChange={(val) => handleChange('experienceYears', val)}
+                  min={0}
+                  max={40}
+                  step={1}
+                  suffix=" Years"
+                  colorScheme="emerald"
+                  helperText="Experience helps local banks evaluate loan repayment viability and interest concessions."
+                  presets={[
+                    { label: 'Fresh (0 yrs)', value: 0 },
+                    { label: '2 yrs', value: 2 },
+                    { label: '5 yrs', value: 5 },
+                    { label: '10 yrs', value: 10 },
+                    { label: '20+ yrs', value: 20 },
+                  ]}
                 />
               </div>
             </div>
@@ -340,60 +378,93 @@ export const ProfilePage: React.FC = () => {
               <p className="text-gray-600 text-xs mt-1">Enter your available capital and estimated/actual sales to structure loan calculations.</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs font-bold text-emerald-950 uppercase tracking-wider mb-2">
-                  Capital Available to Invest (₹) <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  min="1000"
-                  step="5000"
+                <SliderField
+                  label="Capital Available to Invest"
                   value={formData.capital}
-                  onChange={(e) => handleChange('capital', Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15 font-semibold"
+                  onChange={(val) => handleChange('capital', val)}
+                  min={5000}
+                  max={1000000}
+                  step={5000}
+                  prefix="₹"
+                  icon={IndianRupee}
+                  colorScheme="emerald"
+                  helperText="Self-contribution margin money used to match bank loan criteria."
+                  presets={[
+                    { label: '₹25K', value: 25000 },
+                    { label: '₹50K', value: 50000 },
+                    { label: '₹1 Lakh', value: 100000 },
+                    { label: '₹2.5 Lakh', value: 250000 },
+                    { label: '₹5 Lakh', value: 500000 },
+                  ]}
                 />
-                {errors.capital && <p className="text-xs text-red-500 mt-1">{errors.capital}</p>}
+                {errors.capital && <p className="text-xs text-red-500 mt-1 font-semibold">{errors.capital}</p>}
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-emerald-950 uppercase tracking-wider mb-2">
-                  Monthly Sales / Revenue (₹)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="2000"
+                <SliderField
+                  label="Monthly Sales / Revenue"
                   value={formData.monthlySales}
-                  onChange={(e) => handleChange('monthlySales', Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15 font-semibold"
+                  onChange={(val) => handleChange('monthlySales', val)}
+                  min={0}
+                  max={500000}
+                  step={2500}
+                  prefix="₹"
+                  suffix=" / mo"
+                  colorScheme="emerald"
+                  helperText="Estimated gross monthly revenue from harvest, dairy, or shop turnover."
+                  presets={[
+                    { label: '₹20K', value: 20000 },
+                    { label: '₹35K', value: 35000 },
+                    { label: '₹60K', value: 60000 },
+                    { label: '₹1 Lakh', value: 100000 },
+                    { label: '₹2 Lakh', value: 200000 },
+                  ]}
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-emerald-950 uppercase tracking-wider mb-2">
-                  Monthly Operating Costs (₹)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="1000"
+                <SliderField
+                  label="Monthly Operating Costs"
                   value={formData.monthlyExpenses}
-                  onChange={(e) => handleChange('monthlyExpenses', Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15 font-semibold"
+                  onChange={(val) => handleChange('monthlyExpenses', val)}
+                  min={0}
+                  max={300000}
+                  step={1000}
+                  prefix="₹"
+                  suffix=" / mo"
+                  colorScheme="amber"
+                  helperText="Raw materials, seeds, fodder, electricity, fuel, and transport."
+                  presets={[
+                    { label: '₹10K', value: 10000 },
+                    { label: '₹22K', value: 22000 },
+                    { label: '₹40K', value: 40000 },
+                    { label: '₹75K', value: 75000 },
+                    { label: '₹1.5 Lakh', value: 150000 },
+                  ]}
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-emerald-950 uppercase tracking-wider mb-2">
-                  Estimated Customers per Month
-                </label>
-                <input
-                  type="number"
-                  min="0"
+                <SliderField
+                  label="Estimated Customers / Month"
                   value={formData.customerCount}
-                  onChange={(e) => handleChange('customerCount', Number(e.target.value))}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15"
+                  onChange={(val) => handleChange('customerCount', val)}
+                  min={0}
+                  max={1000}
+                  step={10}
+                  suffix=" Customers"
+                  icon={Users}
+                  colorScheme="blue"
+                  helperText="Monthly footfall, wholesale buyers, or regular retail households."
+                  presets={[
+                    { label: '50', value: 50 },
+                    { label: '150', value: 150 },
+                    { label: '300', value: 300 },
+                    { label: '500', value: 500 },
+                    { label: '1000+', value: 1000 },
+                  ]}
                 />
               </div>
             </div>

@@ -16,6 +16,7 @@ export interface BusinessProfile {
   businessGoal: string;
   targetCustomers: string;
   language: Language;
+  avatarUrl?: string;
 }
 
 export interface HyperLocalAnalysis {

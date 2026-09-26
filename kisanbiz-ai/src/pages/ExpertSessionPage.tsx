@@ -63,18 +63,18 @@ export const ExpertSessionPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 animate-fadeIn max-w-6xl mx-auto">
+    <div className="space-y-8 animate-fadeIn w-full max-w-[1820px] mx-auto">
       
       {/* Header */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-200 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 border border-emerald-200 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-rose-800 bg-rose-100 px-3 py-1 rounded-full border border-rose-300">
+          <span className="text-xs font-bold uppercase tracking-widest text-rose-800 dark:text-rose-300 bg-rose-100 dark:bg-rose-950/70 px-3 py-1 rounded-full border border-rose-300 dark:border-rose-800">
             1-on-1 Expert Advisory Sessions
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-emerald-950 mt-2">
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-emerald-950 dark:text-slate-100 mt-2">
             Book a Guidance Session with Domain Specialists
           </h1>
-          <p className="text-gray-600 text-xs sm:text-sm mt-1">
+          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">
             Connect directly with rural banking managers, agri-supply chain experts, and SHG enterprise mentors to review your bank loan project report.
           </p>
         </div>
@@ -82,14 +82,14 @@ export const ExpertSessionPage: React.FC = () => {
 
       {/* Confirmed Bookings Banner if any */}
       {expertBookings.length > 0 && (
-        <div className="bg-emerald-900 text-white rounded-3xl p-6 space-y-4 shadow-lg border border-emerald-700">
+        <div className="bg-emerald-900 dark:bg-slate-900 text-white rounded-3xl p-6 space-y-4 shadow-lg border border-emerald-700 dark:border-slate-800">
           <div className="flex items-center gap-2 text-amber-300 font-bold text-sm">
             <CheckCircle2 className="h-5 w-5 text-amber-400" /> Active Confirmed Appointments ({expertBookings.length})
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
             {expertBookings.map((b) => (
-              <div key={b.id} className="bg-emerald-950/80 p-4 rounded-2xl border border-emerald-700 space-y-2 text-xs">
+              <div key={b.id} className="bg-emerald-950/80 dark:bg-slate-800/90 p-4 rounded-2xl border border-emerald-700 dark:border-slate-700 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-amber-300">Ref ID: {b.bookingRef}</span>
                   <span className="bg-emerald-700 text-white text-[10px] font-bold px-2 py-0.5 rounded">
@@ -97,11 +97,11 @@ export const ExpertSessionPage: React.FC = () => {
                   </span>
                 </div>
                 <p className="text-sm font-bold text-white">{b.expertName}</p>
-                <p className="text-emerald-200 flex items-center gap-1.5">
+                <p className="text-emerald-200 dark:text-emerald-300 flex items-center gap-1.5">
                   <Calendar className="h-3.5 w-3.5 text-amber-400" /> Date: {b.date} • {b.timeSlot}
                 </p>
-                <p className="text-emerald-300 text-[11px] truncate">Topic: {b.topic}</p>
-                <p className="text-[10px] text-emerald-400">SMS reminder sent to +91 {b.userPhone}</p>
+                <p className="text-emerald-300 dark:text-emerald-400 text-[11px] truncate">Topic: {b.topic}</p>
+                <p className="text-[10px] text-emerald-400 dark:text-emerald-500">SMS reminder sent to +91 {b.userPhone}</p>
               </div>
             ))}
           </div>
@@ -109,11 +109,11 @@ export const ExpertSessionPage: React.FC = () => {
       )}
 
       {/* Expert Listing Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {expertsList.map((expert) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 2xl:gap-8">
+        {expertsList.map((expert, idx) => (
           <div
             key={expert.id}
-            className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-sm hover:shadow-md transition-all space-y-5 flex flex-col justify-between"
+            className={`group bg-white dark:bg-slate-900 rounded-3xl p-6 2xl:p-8 border border-emerald-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 space-y-5 flex flex-col justify-between hover-card-lift animate-fade-in-up stagger-${(idx % 3) + 1}`}
           >
             <div className="space-y-4">
               
@@ -122,13 +122,13 @@ export const ExpertSessionPage: React.FC = () => {
                 <img
                   src={expert.imageUrl}
                   alt={expert.name}
-                  className="h-16 w-16 rounded-2xl object-cover border-2 border-emerald-600 shadow-2xs"
+                  className="h-16 w-16 rounded-2xl object-cover border-2 border-emerald-600 shadow-2xs group-hover:scale-105 transition-transform duration-300"
                 />
                 <div>
-                  <h3 className="font-serif text-lg font-bold text-emerald-950">
+                  <h3 className="font-serif text-lg font-bold text-emerald-950 dark:text-slate-100">
                     {expert.name}
                   </h3>
-                  <p className="text-xs text-emerald-700 font-medium">
+                  <p className="text-xs text-emerald-700 dark:text-emerald-400 font-medium">
                     {expert.title}
                   </p>
                   <div className="flex items-center gap-1 text-xs text-amber-600 font-bold mt-1">
@@ -176,7 +176,7 @@ export const ExpertSessionPage: React.FC = () => {
 
             <button
               onClick={() => handleOpenBookingModal(expert)}
-              className="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-1.5 mt-4"
+              className="w-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-lg transition-all hover:scale-102 active:scale-98 flex items-center justify-center gap-1.5 mt-4"
             >
               <Calendar className="h-4 w-4 text-amber-300" /> Book 1-on-1 Session
             </button>
@@ -186,8 +186,8 @@ export const ExpertSessionPage: React.FC = () => {
 
       {/* Interactive Booking Modal */}
       {selectedExpert && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-emerald-200 shadow-2xl space-y-5 relative">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in-up">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border border-emerald-200 shadow-2xl space-y-5 relative animate-pop-in">
             
             <button
               onClick={() => setSelectedExpert(null)}

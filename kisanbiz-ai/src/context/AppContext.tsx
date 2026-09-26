@@ -37,6 +37,9 @@ interface AppContextType {
   financialResult: FinancialPlanResult;
   language: 'Hindi' | 'Marathi' | 'English';
   setLanguage: (lang: 'Hindi' | 'Marathi' | 'English') => void;
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+  toggleTheme: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -44,8 +47,44 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 const LOCAL_PROFILE_KEY = 'vypaar_saathi_profile';
 const LOCAL_TASKS_KEY = 'vypaar_saathi_tasks';
 const LOCAL_BOOKINGS_KEY = 'vypaar_saathi_bookings';
+const LOCAL_THEME_KEY = 'vypaar_saathi_theme';
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  // Theme state
+  const [theme, setThemeState] = useState<'light' | 'dark'>(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_THEME_KEY);
+      if (saved === 'dark' || saved === 'light') return saved;
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+    } catch {
+      // Fallback
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_THEME_KEY, theme);
+    } catch (e) {
+      console.warn('Could not save theme', e);
+    }
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
+
+  const setTheme = (newTheme: 'light' | 'dark') => {
+    setThemeState(newTheme);
+  };
+
   // Load profile from localStorage or default
   const [profile, setProfileState] = useState<BusinessProfile>(() => {
     try {
@@ -165,6 +204,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         financialResult,
         language: profile.language || 'Hindi',
         setLanguage,
+        theme,
+        setTheme,
+        toggleTheme,
       }}
     >
       {children}

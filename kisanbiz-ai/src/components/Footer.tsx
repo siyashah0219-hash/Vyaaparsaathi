@@ -1,24 +1,20 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { Store, ShieldCheck, PhoneCall, Heart, Award } from 'lucide-react';
+import { Logo } from './Logo';
+import { ShieldCheck, PhoneCall, Heart, Award } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { setActiveTab } = useApp();
 
   return (
-    <footer className="bg-emerald-950 text-emerald-100 border-t-4 border-amber-500 pt-12 pb-8 mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-emerald-950 dark:bg-slate-950 text-emerald-100 dark:text-slate-300 border-t-4 border-amber-500 dark:border-emerald-500 pt-12 pb-8 mt-16 transition-colors">
+      <div className="max-w-[1820px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-emerald-800/60">
           
           {/* Brand Info */}
           <div className="space-y-4 md:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <div className="h-9 w-9 rounded-lg bg-amber-500 text-emerald-950 flex items-center justify-center font-bold">
-                <Store className="h-5 w-5" />
-              </div>
-              <span className="font-serif text-xl font-bold tracking-tight text-white">
-                VYPAAR SAATHI
-              </span>
+            <div className="cursor-pointer" onClick={() => setActiveTab('home')}>
+              <Logo size="md" showTagline={false} className="[&_span]:text-white" />
             </div>
             <p className="text-xs text-emerald-200 leading-relaxed">
               Empowering rural micro-entrepreneurs across Bharat with hyper-local business intelligence, bankable loan structuring, and direct government scheme access.

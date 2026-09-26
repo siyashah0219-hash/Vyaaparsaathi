@@ -12,6 +12,7 @@ import {
   Sparkles,
   HelpCircle,
 } from 'lucide-react';
+import { SliderField } from '../components/ui/SliderField';
 
 export const RiskAnalysisPage: React.FC = () => {
   const { profile, financialResult, financialInput, setActiveTab } = useApp();
@@ -59,44 +60,42 @@ export const RiskAnalysisPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Slider 1: Sales Dip */}
-          <div className="space-y-2 text-xs bg-white p-4 rounded-2xl border border-amber-200">
-            <div className="flex justify-between font-bold text-emerald-950">
-              <span>What if monthly sales drop by?</span>
-              <span className="text-red-600 font-bold">{salesDipPercent}%</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="40"
-              step="5"
-              value={salesDipPercent}
-              onChange={(e) => setSalesDipPercent(Number(e.target.value))}
-              className="w-full accent-red-600 cursor-pointer"
-            />
-            <p className="text-[11px] text-gray-500">
-              New Simulated Sales: <strong>₹{adjustedSales.toLocaleString('en-IN')}</strong> / month
-            </p>
-          </div>
+          <SliderField
+            label="What if monthly sales drop by?"
+            value={salesDipPercent}
+            onChange={(val) => setSalesDipPercent(val)}
+            min={0}
+            max={40}
+            step={5}
+            suffix="%"
+            colorScheme="red"
+            helperText={`Simulated Monthly Sales: ₹${adjustedSales.toLocaleString('en-IN')}`}
+            presets={[
+              { label: '0% (Base)', value: 0 },
+              { label: '-10%', value: 10 },
+              { label: '-20%', value: 20 },
+              { label: '-30%', value: 30 },
+            ]}
+          />
 
           {/* Slider 2: Cost Increase */}
-          <div className="space-y-2 text-xs bg-white p-4 rounded-2xl border border-amber-200">
-            <div className="flex justify-between font-bold text-emerald-950">
-              <span>What if raw material costs rise by?</span>
-              <span className="text-amber-700 font-bold">{costIncreasePercent}%</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="30"
-              step="5"
-              value={costIncreasePercent}
-              onChange={(e) => setCostIncreasePercent(Number(e.target.value))}
-              className="w-full accent-amber-600 cursor-pointer"
-            />
-            <p className="text-[11px] text-gray-500">
-              New Simulated Expenses: <strong>₹{adjustedCosts.toLocaleString('en-IN')}</strong> / month
-            </p>
-          </div>
+          <SliderField
+            label="What if raw material costs rise by?"
+            value={costIncreasePercent}
+            onChange={(val) => setCostIncreasePercent(val)}
+            min={0}
+            max={40}
+            step={5}
+            suffix="%"
+            colorScheme="amber"
+            helperText={`Simulated Monthly Costs: ₹${adjustedCosts.toLocaleString('en-IN')}`}
+            presets={[
+              { label: '0% (Base)', value: 0 },
+              { label: '+10%', value: 10 },
+              { label: '+20%', value: 20 },
+              { label: '+30%', value: 30 },
+            ]}
+          />
 
         </div>
 
@@ -120,47 +119,47 @@ export const RiskAnalysisPage: React.FC = () => {
 
       {/* Identified Risk Factors & Mitigation Matrix */}
       <div className="space-y-4">
-        <h3 className="font-serif text-xl font-bold text-emerald-950 flex items-center gap-2">
-          <ShieldAlert className="h-6 w-6 text-emerald-700" /> Key Risk Factors & Actionable Mitigations
+        <h3 className="font-serif text-xl font-bold text-emerald-950 dark:text-slate-100 flex items-center gap-2">
+          <ShieldAlert className="h-6 w-6 text-emerald-700 dark:text-emerald-400" /> Key Risk Factors & Actionable Mitigations
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {sampleRiskFactors.map((risk) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-5">
+          {sampleRiskFactors.map((risk, idx) => (
             <div
               key={risk.id}
-              className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-sm space-y-4 flex flex-col justify-between"
+              className={`bg-white dark:bg-slate-900 rounded-3xl p-6 border border-emerald-200 dark:border-slate-800 shadow-sm space-y-4 flex flex-col justify-between transition-all duration-300 hover-card-lift animate-fade-in-up stagger-${(idx % 4) + 1}`}
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
                     {risk.category}
                   </span>
                   <span
                     className={`text-[10px] font-bold px-2 py-0.5 rounded ${
                       risk.severity === 'High'
-                        ? 'bg-red-100 text-red-800 border border-red-200'
-                        : 'bg-amber-100 text-amber-800 border border-amber-200'
+                        ? 'bg-red-100 dark:bg-red-950/60 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800'
+                        : 'bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
                     }`}
                   >
                     {risk.severity} Severity
                   </span>
                 </div>
 
-                <h4 className="font-serif text-lg font-bold text-emerald-950">
+                <h4 className="font-serif text-lg font-bold text-emerald-950 dark:text-slate-100">
                   {risk.name}
                 </h4>
 
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   {risk.description}
                 </p>
               </div>
 
               {/* Mitigation Strategy Box */}
-              <div className="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 text-xs space-y-1">
-                <span className="font-bold text-emerald-950 flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-700" /> Mitigation Strategy:
+              <div className="bg-emerald-50/70 dark:bg-slate-800/80 p-4 rounded-2xl border border-emerald-200 dark:border-slate-700 text-xs space-y-1">
+                <span className="font-bold text-emerald-950 dark:text-emerald-300 flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400" /> Mitigation Strategy:
                 </span>
-                <p className="text-emerald-900 font-medium leading-relaxed">
+                <p className="text-emerald-900 dark:text-slate-300 font-medium leading-relaxed">
                   {risk.mitigationStrategy}
                 </p>
               </div>

@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Landmark,
 } from 'lucide-react';
+import { SliderField } from '../components/ui/SliderField';
 
 export const FinancialPlanPage: React.FC = () => {
   const { financialInput, setFinancialInput, financialResult, profile, setActiveTab } = useApp();
@@ -65,102 +66,118 @@ export const FinancialPlanPage: React.FC = () => {
             </span>
           </div>
 
-          <div className="space-y-4 text-xs">
+          <div className="space-y-4">
             
             {/* Total Startup / Expansion Cost */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between font-bold text-emerald-950">
-                <span>Total Startup / Expansion Cost</span>
-                <span className="text-emerald-800">₹{financialInput.startupCost.toLocaleString('en-IN')}</span>
-              </div>
-              <input
-                type="range"
-                min="10000"
-                max="500000"
-                step="5000"
-                value={financialInput.startupCost}
-                onChange={(e) => handleInputChange('startupCost', Number(e.target.value))}
-                className="w-full accent-emerald-700 cursor-pointer"
-              />
-            </div>
+            <SliderField
+              label="Total Startup / Expansion Cost"
+              value={financialInput.startupCost}
+              onChange={(val) => handleInputChange('startupCost', val)}
+              min={10000}
+              max={1000000}
+              step={5000}
+              prefix="₹"
+              colorScheme="emerald"
+              helperText="Estimated machinery, shed setup, initial stock, and working capital."
+              presets={[
+                { label: '₹50K', value: 50000 },
+                { label: '₹1.2 Lakh', value: 120000 },
+                { label: '₹2.5 Lakh', value: 250000 },
+                { label: '₹5 Lakh', value: 500000 },
+              ]}
+            />
 
             {/* Own Capital Contribution */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between font-bold text-emerald-950">
-                <span>Your Own Capital</span>
-                <span className="text-emerald-800">₹{financialInput.ownCapital.toLocaleString('en-IN')}</span>
-              </div>
-              <input
-                type="range"
-                min="5000"
-                max={financialInput.startupCost}
-                step="5000"
-                value={financialInput.ownCapital}
-                onChange={(e) => handleInputChange('ownCapital', Number(e.target.value))}
-                className="w-full accent-emerald-700 cursor-pointer"
-              />
-            </div>
+            <SliderField
+              label="Your Own Capital Contribution"
+              value={financialInput.ownCapital}
+              onChange={(val) => handleInputChange('ownCapital', val)}
+              min={5000}
+              max={Math.max(5000, financialInput.startupCost)}
+              step={5000}
+              prefix="₹"
+              colorScheme="emerald"
+              helperText="Personal funds or family savings invested in this project."
+              presets={[
+                { label: '₹25K', value: 25000 },
+                { label: '₹45K', value: 45000 },
+                { label: '₹1 Lakh', value: 100000 },
+              ]}
+            />
 
             {/* Monthly Expected Revenue */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between font-bold text-emerald-950">
-                <span>Monthly Expected Sales / Revenue</span>
-                <span className="text-emerald-800">₹{financialInput.monthlyRevenue.toLocaleString('en-IN')}</span>
-              </div>
-              <input
-                type="range"
-                min="5000"
-                max="200000"
-                step="2000"
-                value={financialInput.monthlyRevenue}
-                onChange={(e) => handleInputChange('monthlyRevenue', Number(e.target.value))}
-                className="w-full accent-emerald-700 cursor-pointer"
-              />
-            </div>
+            <SliderField
+              label="Monthly Expected Sales / Revenue"
+              value={financialInput.monthlyRevenue}
+              onChange={(val) => handleInputChange('monthlyRevenue', val)}
+              min={5000}
+              max={500000}
+              step={2000}
+              prefix="₹"
+              suffix=" / mo"
+              colorScheme="emerald"
+              helperText="Projected cash receipts from customer sales and produce."
+              presets={[
+                { label: '₹25K', value: 25000 },
+                { label: '₹35K', value: 35000 },
+                { label: '₹60K', value: 60000 },
+                { label: '₹1 Lakh', value: 100000 },
+              ]}
+            />
 
             {/* Monthly Operating Expenses */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between font-bold text-emerald-950">
-                <span>Monthly Operating Expenses</span>
-                <span className="text-emerald-800">₹{financialInput.monthlyExpenses.toLocaleString('en-IN')}</span>
-              </div>
-              <input
-                type="range"
-                min="2000"
-                max={financialInput.monthlyRevenue}
-                step="1000"
-                value={financialInput.monthlyExpenses}
-                onChange={(e) => handleInputChange('monthlyExpenses', Number(e.target.value))}
-                className="w-full accent-emerald-700 cursor-pointer"
-              />
-            </div>
+            <SliderField
+              label="Monthly Operating Expenses"
+              value={financialInput.monthlyExpenses}
+              onChange={(val) => handleInputChange('monthlyExpenses', val)}
+              min={2000}
+              max={Math.max(2000, financialInput.monthlyRevenue)}
+              step={1000}
+              prefix="₹"
+              suffix=" / mo"
+              colorScheme="amber"
+              helperText="Cost of supplies, packaging, fuel, electricity, and labor."
+              presets={[
+                { label: '₹12K', value: 12000 },
+                { label: '₹22K', value: 22000 },
+                { label: '₹40K', value: 40000 },
+              ]}
+            />
 
-            {/* Bank Interest & Tenure Grid */}
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">Bank Interest %</label>
-                <input
-                  type="number"
-                  step="0.5"
-                  value={financialInput.interestRate}
-                  onChange={(e) => handleInputChange('interestRate', Number(e.target.value))}
-                  className="w-full p-2.5 border rounded-xl font-bold text-emerald-950 text-xs outline-none focus:border-emerald-600"
-                />
-              </div>
+            {/* Bank Interest Slider */}
+            <SliderField
+              label="Bank Loan Interest Rate"
+              value={financialInput.interestRate}
+              onChange={(val) => handleInputChange('interestRate', val)}
+              min={4}
+              max={20}
+              step={0.25}
+              suffix="%"
+              colorScheme="blue"
+              helperText="Annual percentage rate applied on the term loan."
+              presets={[
+                { label: 'KCC Subsidized (7%)', value: 7 },
+                { label: 'PM MUDRA (8.5%)', value: 8.5 },
+                { label: 'PSB Normal (11.5%)', value: 11.5 },
+                { label: 'NBFC (14%)', value: 14 },
+              ]}
+            />
 
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">Tenure (Months)</label>
-                <select
-                  value={financialInput.tenureMonths}
-                  onChange={(e) => handleInputChange('tenureMonths', Number(e.target.value))}
-                  className="w-full p-2.5 border rounded-xl font-bold text-emerald-950 text-xs bg-white outline-none focus:border-emerald-600"
-                >
-                  <option value={12}>12 Months (1 Year)</option>
-                  <option value={24}>24 Months (2 Years)</option>
-                  <option value={36}>36 Months (3 Years)</option>
-                  <option value={60}>60 Months (5 Years)</option>
-                </select>
-              </div>
+            {/* Tenure Selector */}
+            <div className="p-4 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+              <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2">
+                Loan Repayment Tenure
+              </label>
+              <select
+                value={financialInput.tenureMonths}
+                onChange={(e) => handleInputChange('tenureMonths', Number(e.target.value))}
+                className="w-full px-3.5 py-2.5 border rounded-xl font-bold text-emerald-950 dark:text-emerald-300 text-xs bg-slate-50 dark:bg-slate-800 border-slate-300 dark:border-slate-700 outline-none focus:border-emerald-600 cursor-pointer"
+              >
+                <option value={12}>12 Months (1 Year)</option>
+                <option value={24}>24 Months (2 Years) — Recommended</option>
+                <option value={36}>36 Months (3 Years)</option>
+                <option value={60}>60 Months (5 Years)</option>
+              </select>
             </div>
 
           </div>
@@ -169,82 +186,93 @@ export const FinancialPlanPage: React.FC = () => {
         {/* Right Column: Dynamic Calculation Results (7 Cols) */}
         <div className="lg:col-span-7 space-y-6">
           
-          {/* Top Key Performance Metrics Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Top Key Performance Metrics Row (4 cols on 2xl) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-4">
             
             {/* Term Loan Needed */}
-            <div className="bg-white rounded-2xl p-5 border border-emerald-200 shadow-2xs space-y-1">
-              <span className="text-xs text-gray-500 font-medium">Bank Loan Required</span>
-              <p className="font-serif text-2xl font-bold text-emerald-950">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-1 transition-all duration-300 hover-card-lift animate-fade-in-up stagger-1">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Bank Loan Required</span>
+              <p className="font-serif text-2xl font-bold text-emerald-950 dark:text-slate-100">
                 ₹{financialResult.termLoanNeeded.toLocaleString('en-IN')}
               </p>
-              <p className="text-[11px] text-gray-500">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 After ₹{financialInput.ownCapital.toLocaleString('en-IN')} own capital
               </p>
             </div>
 
             {/* Monthly EMI */}
-            <div className="bg-white rounded-2xl p-5 border border-purple-200 shadow-2xs space-y-1">
-              <span className="text-xs text-gray-500 font-medium">Monthly Bank EMI</span>
-              <p className="font-serif text-2xl font-bold text-purple-950">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-purple-200 dark:border-purple-900/60 shadow-2xs space-y-1 transition-all duration-300 hover-card-lift animate-fade-in-up stagger-2">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Monthly Bank EMI</span>
+              <p className="font-serif text-2xl font-bold text-purple-950 dark:text-purple-300">
                 ₹{financialResult.monthlyEMI.toLocaleString('en-IN')}
               </p>
-              <p className="text-[11px] text-purple-700 font-medium">
+              <p className="text-[11px] text-purple-700 dark:text-purple-400 font-medium">
                 @{financialInput.interestRate}% for {financialInput.tenureMonths} mos
               </p>
             </div>
 
             {/* DSCR Score */}
-            <div className="bg-white rounded-2xl p-5 border border-emerald-200 shadow-2xs space-y-1">
-              <span className="text-xs text-gray-500 font-medium">DSCR Score (Bank Approval)</span>
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-1 transition-all duration-300 hover-card-lift animate-fade-in-up stagger-3">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">DSCR Score (Bank Approval)</span>
               <div className="flex items-baseline gap-2">
-                <span className="font-serif text-3xl font-bold text-emerald-950">
+                <span className="font-serif text-3xl font-bold text-emerald-950 dark:text-slate-100">
                   {financialResult.dscr}
                 </span>
                 <span
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded ${
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded transition-transform hover:scale-105 ${
                     financialResult.dscrStatus === 'Healthy'
-                      ? 'bg-emerald-100 text-emerald-900'
-                      : 'bg-amber-100 text-amber-900'
+                      ? 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-300'
+                      : 'bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-300'
                   }`}
                 >
                   {financialResult.dscrStatus}
                 </span>
               </div>
-              <p className="text-[10px] text-gray-500">Target DSCR &gt; 1.25 for MUDRA</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Target DSCR &gt; 1.25 for MUDRA</p>
+            </div>
+
+            {/* Net Monthly Profit Buffer (Widescreen 2xl Card) */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-emerald-200 dark:border-slate-800 shadow-2xs space-y-1 transition-all duration-300 hover-card-lift animate-fade-in-up stagger-4 hidden 2xl:block">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Net Monthly Surplus</span>
+              <p className="font-serif text-2xl font-bold text-emerald-700 dark:text-emerald-400">
+                ₹{Math.max(0, financialInput.monthlyRevenue - financialInput.monthlyExpenses - financialResult.monthlyEMI).toLocaleString('en-IN')}
+              </p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Net surplus after loan EMI servicing
+              </p>
             </div>
 
           </div>
 
           {/* Funding Mix Breakdown */}
-          <div className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-sm space-y-4">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-emerald-200 dark:border-slate-800 shadow-sm space-y-4 transition-colors">
             <div className="flex items-center justify-between">
-              <h3 className="font-serif text-base font-bold text-emerald-950 flex items-center gap-2">
-                <PieChart className="h-5 w-5 text-emerald-700" /> Proposed Funding Mix Breakdown
+              <h3 className="font-serif text-base font-bold text-emerald-950 dark:text-slate-100 flex items-center gap-2">
+                <PieChart className="h-5 w-5 text-emerald-700 dark:text-emerald-400" /> Proposed Funding Mix Breakdown
               </h3>
-              <span className="text-xs font-bold text-emerald-800">
+              <span className="text-xs font-bold text-emerald-800 dark:text-emerald-400">
                 Total ₹{financialInput.startupCost.toLocaleString('en-IN')}
               </span>
             </div>
 
             {/* Progress Stack Bar */}
-            <div className="h-4 w-full bg-gray-100 rounded-full overflow-hidden flex">
+            <div className="h-4 w-full bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden flex shadow-inner">
               <div
-                className="bg-emerald-700 h-full"
+                className="bg-emerald-600 dark:bg-emerald-500 h-full transition-all duration-700 ease-out hover:brightness-110"
                 style={{
                   width: `${Math.min(100, (financialResult.fundingMix.ownCapital / financialInput.startupCost) * 100)}%`,
                 }}
                 title="Own Capital"
               />
               <div
-                className="bg-purple-600 h-full"
+                className="bg-purple-600 dark:bg-purple-500 h-full transition-all duration-700 ease-out hover:brightness-110"
                 style={{
                   width: `${Math.min(100, (financialResult.fundingMix.termLoan / financialInput.startupCost) * 100)}%`,
                 }}
                 title="Term Loan"
               />
               <div
-                className="bg-amber-400 h-full"
+                className="bg-amber-400 dark:bg-amber-500 h-full transition-all duration-700 ease-out hover:brightness-110"
                 style={{
                   width: `${Math.min(100, (financialResult.fundingMix.govtSubsidy / financialInput.startupCost) * 100)}%`,
                 }}
