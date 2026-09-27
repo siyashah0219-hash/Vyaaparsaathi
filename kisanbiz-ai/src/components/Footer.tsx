@@ -1,110 +1,86 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import { Logo } from './Logo';
-import { ShieldCheck, PhoneCall, Heart, Award } from 'lucide-react';
+import { PhoneCall, Heart, ShieldCheck } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const { setActiveTab } = useApp();
+  const { setActiveTab, t } = useApp();
 
   return (
-    <footer className="bg-emerald-950 dark:bg-slate-950 text-emerald-100 dark:text-slate-300 border-t-4 border-amber-500 dark:border-emerald-500 pt-12 pb-8 mt-16 transition-colors">
+    <footer className="mt-8 border-t border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md text-slate-600 dark:text-slate-400 py-5 transition-colors">
       <div className="max-w-[1820px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-emerald-800/60">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           
-          {/* Brand Info */}
-          <div className="space-y-4 md:col-span-1">
+          {/* Brand & Compact Tagline */}
+          <div className="flex items-center gap-3">
             <div className="cursor-pointer" onClick={() => setActiveTab('home')}>
-              <Logo size="md" showTagline={false} className="[&_span]:text-white" />
+              <Logo size="sm" showTagline={false} />
             </div>
-            <p className="text-xs text-emerald-200 leading-relaxed">
-              Empowering rural micro-entrepreneurs across Bharat with hyper-local business intelligence, bankable loan structuring, and direct government scheme access.
+            <span className="hidden sm:inline-block h-4 w-px bg-slate-300 dark:bg-slate-700" />
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {t('footer.tagline')}
             </p>
-            <div className="flex items-center gap-2 text-xs font-semibold text-amber-300">
-              <ShieldCheck className="h-4 w-4" /> 100% Private & Safe Local Processing
+          </div>
+
+          {/* Quick Horizontal Navigation Links */}
+          <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300">
+            <button
+              onClick={() => setActiveTab('home')}
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              {t('nav.home')}
+            </button>
+            <button
+              onClick={() => setActiveTab('analyze')}
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              {t('nav.analyze')}
+            </button>
+            <button
+              onClick={() => setActiveTab('financial-plan')}
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              {t('nav.financialPlan')}
+            </button>
+            <button
+              onClick={() => setActiveTab('schemes')}
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              {t('nav.schemes')}
+            </button>
+            <button
+              onClick={() => setActiveTab('advisor')}
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              {t('nav.advisor')}
+            </button>
+            <button
+              onClick={() => setActiveTab('expert-session')}
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+            >
+              {t('nav.expertSession')}
+            </button>
+          </nav>
+
+          {/* Helpline & Security Badges */}
+          <div className="flex items-center gap-3 text-xs">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-bold">
+              <PhoneCall className="h-3 w-3 text-emerald-600" />
+              <span>1800-VYPAAR-SAATHI</span>
             </div>
-          </div>
-
-          {/* Quick Module Navigation */}
-          <div>
-            <h4 className="text-sm font-bold text-amber-300 uppercase tracking-wider mb-3">
-              Application Modules
-            </h4>
-            <ul className="space-y-2 text-xs text-emerald-200">
-              <li>
-                <button onClick={() => setActiveTab('profile')} className="hover:text-white hover:underline">
-                  Business Profile Builder
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('analyze')} className="hover:text-white hover:underline">
-                  Hyper-Local Market Analysis
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('financial-plan')} className="hover:text-white hover:underline">
-                  Financial Calculator & Loan Plan
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('risk-analysis')} className="hover:text-white hover:underline">
-                  Risk Assessment & Sensitivity
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Schemes & Advisory */}
-          <div>
-            <h4 className="text-sm font-bold text-amber-300 uppercase tracking-wider mb-3">
-              Resources & Advisory
-            </h4>
-            <ul className="space-y-2 text-xs text-emerald-200">
-              <li>
-                <button onClick={() => setActiveTab('schemes')} className="hover:text-white hover:underline">
-                  PM MUDRA & PMFME Schemes
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('advisor')} className="hover:text-white hover:underline">
-                  Interactive Voice AI Advisor
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('action-plan')} className="hover:text-white hover:underline">
-                  30-60-90 Day Action Roadmap
-                </button>
-              </li>
-              <li>
-                <button onClick={() => setActiveTab('expert-session')} className="hover:text-white hover:underline">
-                  Book 1-on-1 Expert Guidance
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Helpline & Support */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-bold text-amber-300 uppercase tracking-wider">
-              Rural Entrepreneur Support
-            </h4>
-            <div className="bg-emerald-900/80 border border-emerald-700/60 rounded-xl p-3">
-              <p className="text-[11px] text-emerald-300">Toll-Free Helpline (Mon-Sat 9AM-6PM)</p>
-              <p className="text-lg font-bold text-amber-300 flex items-center gap-2 mt-1">
-                <PhoneCall className="h-5 w-5 text-amber-400" /> 1800-VYPAAR-SAATHI
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-emerald-300">
-              <Award className="h-4 w-4 text-amber-400" /> Recognized by Rural MSME Advisory Body
+            <div className="hidden lg:flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+              <span>100% Private Local Engine</span>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-400 gap-3">
-          <p>© 2026 VYPAAR SAATHI. Built for Bharat's Ambitious Micro-Entrepreneurs.</p>
+        {/* Compact Bottom Line */}
+        <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 dark:text-slate-500 gap-2">
+          <p>{t('footer.copyright')}</p>
           <p className="flex items-center gap-1">
-            Made with <Heart className="h-3.5 w-3.5 text-red-400 fill-red-400" /> for Rural Business Growth
+            Made with <Heart className="h-3 w-3 text-rose-500 fill-rose-500" /> for Bharat's Rural Micro-Entrepreneurs
           </p>
         </div>
       </div>

@@ -16,11 +16,13 @@ import {
   Building,
   Rocket,
   Users,
+  LogOut,
+  LogIn,
 } from 'lucide-react';
 import { SliderField } from '../components/ui/SliderField';
 
 export const ProfilePage: React.FC = () => {
-  const { profile, updateProfile, setActiveTab } = useApp();
+  const { profile, updateProfile, setActiveTab, logout, openAuthModal, isLoggedIn, t } = useApp();
 
   const [step, setStep] = useState<number>(1);
   const [formData, setFormData] = useState<BusinessProfile>({ ...profile });
@@ -561,6 +563,52 @@ export const ProfilePage: React.FC = () => {
           )}
         </div>
 
+      </div>
+
+      {/* Account Session & Logout Control Card */}
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-sm">
+            {profile.name ? profile.name[0].toUpperCase() : 'U'}
+          </div>
+          <div>
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+              Current Session: <strong className="text-slate-900 dark:text-white">{profile.name}</strong>
+            </p>
+            <p className="text-[11px] text-slate-400 dark:text-slate-500">
+              {isLoggedIn ? 'Active verified profile' : 'Guest mode'}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={openAuthModal}
+            className="flex-1 sm:flex-none px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold transition-all cursor-pointer"
+          >
+            {t('action.switchAccount')}
+          </button>
+          {isLoggedIn ? (
+            <button
+              type="button"
+              onClick={logout}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/40 dark:hover:bg-red-950/60 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-xs font-bold transition-all cursor-pointer"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              <span>{t('action.logout')}</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={openAuthModal}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold transition-all cursor-pointer"
+            >
+              <LogIn className="h-3.5 w-3.5" />
+              <span>{t('action.login')}</span>
+            </button>
+          )}
+        </div>
       </div>
 
     </div>

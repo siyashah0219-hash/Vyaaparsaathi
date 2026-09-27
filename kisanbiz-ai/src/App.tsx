@@ -14,9 +14,10 @@ import { ActionPlanPage } from './pages/ActionPlanPage';
 import { ExpertSessionPage } from './pages/ExpertSessionPage';
 
 import { AIChatBox } from './components/AIChatBox';
+import { AuthModal } from './components/AuthModal';
 
 const MainContent: React.FC = () => {
-  const { activeTab } = useApp();
+  const { activeTab, isAuthModalOpen, closeAuthModal } = useApp();
 
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-gradient-to-br from-emerald-50/40 via-slate-50 to-amber-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950/40 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-200">
@@ -40,6 +41,7 @@ const MainContent: React.FC = () => {
       <AIChatBox />
 
       <Footer />
+      <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} />
     </div>
   );
 };

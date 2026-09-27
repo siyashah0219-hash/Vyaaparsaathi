@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
-  const { setActiveTab, profile, updateProfile, financialResult } = useApp();
+  const { setActiveTab, profile, updateProfile, financialResult, t } = useApp();
 
   const handleStartNew = () => {
     updateProfile({ businessType: 'new' });
@@ -223,16 +223,12 @@ export const HomePage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-emerald-950 dark:text-slate-100">
-              What would you like to do today?
+              {t('home.whatToDo')}
             </h2>
             <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">
-              Select a module below. Every tool is fully functional and uses your persistent profile.
+              {t('home.selectModule')}
             </p>
           </div>
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 rounded-full shadow-2xs">
-            <span className="h-2 w-2 rounded-full bg-emerald-600 animate-ping"></span>
-            <ShieldCheck className="h-4 w-4 text-emerald-700 dark:text-emerald-400" /> Live Functional Prototype
-          </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

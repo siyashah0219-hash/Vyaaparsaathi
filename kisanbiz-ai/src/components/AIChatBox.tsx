@@ -211,24 +211,9 @@ export const AIChatBox: React.FC = () => {
 
   return (
     <>
-      {/* Floating Trigger Button (Always visible on bottom right) */}
+      {/* Floating Trigger Button (Single clean bot button on bottom right) */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 animate-fade-in-up">
-          {/* Pulsing Hint Badge */}
-          <div
-            onClick={() => setIsOpen(true)}
-            className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-emerald-500/40 text-emerald-950 dark:text-emerald-300 text-xs font-bold shadow-xl shadow-emerald-900/15 cursor-pointer hover:scale-105 hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
-          >
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-            </span>
-            <span className="tracking-wide">Ask KisanBiz AI</span>
-            <span className="text-[10px] text-amber-700 dark:text-amber-300 font-bold bg-amber-100/80 dark:bg-amber-950/80 px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-700">
-              {profile.district}
-            </span>
-          </div>
-
+        <div className="fixed bottom-6 right-6 z-50 animate-fade-in-up">
           {/* Main Bubble Icon Button with Glow Aura and Float */}
           <div className="relative group">
             {/* Glowing Aura Ring */}

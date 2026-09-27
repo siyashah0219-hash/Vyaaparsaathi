@@ -5,12 +5,19 @@ import {
   ExpertBooking,
   FinancialPlanInput,
   FinancialPlanResult,
+  Language,
 } from '../types';
 import {
   defaultProfile,
   initialActionTasks,
   calculateFinancialPlan,
 } from '../data/mockData';
+import {
+  translations,
+  TranslationKey,
+  getTranslation,
+  applyGoogleTranslate,
+} from '../lib/translations';
 
 export type ActiveTab =
   | 'home'
@@ -22,6 +29,24 @@ export type ActiveTab =
   | 'advisor'
   | 'action-plan'
   | 'expert-session';
+
+export const guestProfile: BusinessProfile = {
+  name: 'Guest Entrepreneur',
+  state: 'Maharashtra',
+  district: 'Satara',
+  villageCity: 'Koregaon',
+  businessCategory: 'Dairy & Animal Husbandry',
+  businessType: 'new',
+  capital: 30000,
+  monthlySales: 15000,
+  monthlyExpenses: 9000,
+  customerCount: 30,
+  experienceYears: 1,
+  businessGoal: 'Explore rural business setup and government scheme subsidies',
+  targetCustomers: 'Local villagers & weekly haat',
+  language: 'English',
+  avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&h=200&q=80',
+};
 
 interface AppContextType {
   profile: BusinessProfile;
@@ -35,11 +60,20 @@ interface AppContextType {
   financialInput: FinancialPlanInput;
   setFinancialInput: React.Dispatch<React.SetStateAction<FinancialPlanInput>>;
   financialResult: FinancialPlanResult;
-  language: 'Hindi' | 'Marathi' | 'English';
-  setLanguage: (lang: 'Hindi' | 'Marathi' | 'English') => void;
+  language: Language;
+  setLanguage: (lang: Language) => void;
   theme: 'light' | 'dark';
   setTheme: (theme: 'light' | 'dark') => void;
   toggleTheme: () => void;
+  // Auth & Session
+  isLoggedIn: boolean;
+  login: (profileData?: Partial<BusinessProfile>) => void;
+  logout: () => void;
+  isAuthModalOpen: boolean;
+  openAuthModal: () => void;
+  closeAuthModal: () => void;
+  // Translation
+  t: (key: TranslationKey) => string;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -48,6 +82,7 @@ const LOCAL_PROFILE_KEY = 'vypaar_saathi_profile';
 const LOCAL_TASKS_KEY = 'vypaar_saathi_tasks';
 const LOCAL_BOOKINGS_KEY = 'vypaar_saathi_bookings';
 const LOCAL_THEME_KEY = 'vypaar_saathi_theme';
+const LOCAL_AUTH_KEY = 'vypaar_saathi_is_logged_in';
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Theme state
@@ -55,7 +90,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     try {
       const saved = localStorage.getItem(LOCAL_THEME_KEY);
       if (saved === 'dark' || saved === 'light') return saved;
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         return 'dark';
       }
     } catch {
@@ -84,6 +119,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const setTheme = (newTheme: 'light' | 'dark') => {
     setThemeState(newTheme);
   };
+
+  // Auth / Login State
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem(LOCAL_AUTH_KEY);
+      if (saved !== null) return saved === 'true';
+    } catch {
+      // Fallback
+    }
+    return true; // Default to true with defaultProfile so app starts ready to explore
+  });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const openAuthModal = () => setIsAuthModalOpen(true);
+  const closeAuthModal = () => setIsAuthModalOpen(false);
 
   // Load profile from localStorage or default
   const [profile, setProfileState] = useState<BusinessProfile>(() => {
@@ -157,7 +207,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const setActiveTab = (tab: ActiveTab) => {
     setActiveTabState(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const toggleTask = (id: string) => {
@@ -184,9 +236,54 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     });
   };
 
-  const setLanguage = (lang: 'Hindi' | 'Marathi' | 'English') => {
+  const currentLanguage: Language = profile.language || 'English';
+
+  const setLanguage = (lang: Language) => {
     updateProfile({ language: lang });
+    // Apply live Google Translate on the DOM
+    applyGoogleTranslate(lang);
   };
+
+  // Translation helper function
+  const t = (key: TranslationKey): string => {
+    return getTranslation(currentLanguage, key);
+  };
+
+  // Login handler
+  const login = (profileData?: Partial<BusinessProfile>) => {
+    const newProfile = profileData ? { ...defaultProfile, ...profileData } : defaultProfile;
+    setProfileState(newProfile);
+    setIsLoggedIn(true);
+    try {
+      localStorage.setItem(LOCAL_AUTH_KEY, 'true');
+      localStorage.setItem(LOCAL_PROFILE_KEY, JSON.stringify(newProfile));
+    } catch (e) {
+      console.warn('Could not persist login', e);
+    }
+  };
+
+  // Logout handler
+  const logout = () => {
+    setIsLoggedIn(false);
+    setProfileState(guestProfile);
+    try {
+      localStorage.setItem(LOCAL_AUTH_KEY, 'false');
+      localStorage.setItem(LOCAL_PROFILE_KEY, JSON.stringify(guestProfile));
+    } catch (e) {
+      console.warn('Could not persist logout', e);
+    }
+    setActiveTab('home');
+  };
+
+  // Initial sync of Google Translate if Hindi/Marathi is saved
+  useEffect(() => {
+    if (currentLanguage === 'Hindi' || currentLanguage === 'Marathi') {
+      const timer = setTimeout(() => {
+        applyGoogleTranslate(currentLanguage);
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   return (
     <AppContext.Provider
@@ -202,11 +299,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         financialInput,
         setFinancialInput,
         financialResult,
-        language: profile.language || 'Hindi',
+        language: currentLanguage,
         setLanguage,
         theme,
         setTheme,
         toggleTheme,
+        isLoggedIn,
+        login,
+        logout,
+        isAuthModalOpen,
+        openAuthModal,
+        closeAuthModal,
+        t,
       }}
     >
       {children}
