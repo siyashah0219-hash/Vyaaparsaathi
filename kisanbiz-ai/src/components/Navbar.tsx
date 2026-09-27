@@ -9,8 +9,6 @@ import {
   ShieldAlert,
   CheckSquare,
   Users,
-  Sun,
-  Moon,
   Globe,
   Menu,
   X,
@@ -31,8 +29,6 @@ export const Navbar: React.FC = () => {
     profile,
     language,
     setLanguage,
-    theme,
-    toggleTheme,
     isLoggedIn,
     logout,
     openAuthModal,
@@ -124,22 +120,8 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Right Action Controls: Theme, Live Language Dropdown, and Profile/Auth */}
+          {/* Right Action Controls: Live Language Dropdown and Profile/Auth */}
           <div className="hidden lg:flex items-center gap-1.5 xl:gap-2 shrink-0">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              className="p-1.5 xl:p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-emerald-50 dark:hover:bg-slate-700 hover:border-emerald-300 dark:hover:border-slate-600 transition-all hover:scale-105 cursor-pointer"
-              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            >
-              {theme === 'dark' ? (
-                <Sun className="h-4 w-4 text-amber-400 animate-spin-once" />
-              ) : (
-                <Moon className="h-4 w-4 text-slate-600" />
-              )}
-            </button>
-
             {/* Live Language Dropdown ("Dropbox") */}
             <div className="relative" ref={langDropdownRef}>
               <button
@@ -299,15 +281,6 @@ export const Navbar: React.FC = () => {
 
           {/* Mobile & Tablet Controls (Visible below lg) */}
           <div className="flex lg:hidden items-center gap-2">
-            {/* Mobile Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-amber-400"
-            >
-              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-
             {/* Mobile Profile / Login Button */}
             {isLoggedIn ? (
               <button

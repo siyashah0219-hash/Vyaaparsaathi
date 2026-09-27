@@ -85,40 +85,21 @@ const LOCAL_THEME_KEY = 'vypaar_saathi_theme';
 const LOCAL_AUTH_KEY = 'vypaar_saathi_is_logged_in';
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Theme state
-  const [theme, setThemeState] = useState<'light' | 'dark'>(() => {
-    try {
-      const saved = localStorage.getItem(LOCAL_THEME_KEY);
-      if (saved === 'dark' || saved === 'light') return saved;
-      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        return 'dark';
-      }
-    } catch {
-      // Fallback
-    }
-    return 'light';
-  });
+  // Light theme only (Dark theme removed)
+  const theme = 'light' as const;
+  const toggleTheme = () => {};
+  const setTheme = () => {};
 
   useEffect(() => {
     try {
-      localStorage.setItem(LOCAL_THEME_KEY, theme);
+      localStorage.removeItem(LOCAL_THEME_KEY);
     } catch (e) {
-      console.warn('Could not save theme', e);
+      console.warn('Could not clean theme key', e);
     }
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
+    if (typeof document !== 'undefined') {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setThemeState((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
-
-  const setTheme = (newTheme: 'light' | 'dark') => {
-    setThemeState(newTheme);
-  };
+  }, []);
 
   // Auth / Login State
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {

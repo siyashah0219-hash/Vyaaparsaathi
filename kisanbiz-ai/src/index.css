@@ -227,80 +227,7 @@ body {
   );
 }
 
-.dark {
-  --button-outline: rgba(255, 255, 255, 0.1);
-  --badge-outline: rgba(255, 255, 255, 0.05);
 
-  --opaque-button-border-intensity: 9; /* In terms of percentages */
-
-  /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(255, 255, 255, 0.04);
-  --elevate-2: rgba(255, 255, 255, 0.09);
-
-  --background: 157 22% 11%;
-  --foreground: 42 36% 95%;
-
-  --border: 153 17% 27%;
-
-  --card: 157 20% 15%;
-  --card-foreground: 42 36% 95%;
-  --card-border: 153 17% 27%;
-
-  --sidebar: 157 25% 9%;
-  --sidebar-foreground: 42 36% 95%;
-  --sidebar-border: 153 17% 22%;
-  --sidebar-primary: 96 42% 61%; /* Pistachio #93C572 */
-  --sidebar-primary-foreground: 157 22% 15%;
-  --sidebar-accent: 153 17% 22%;
-  --sidebar-accent-foreground: 42 36% 95%;
-  --sidebar-ring: 96 42% 61%;
-
-  --popover: 157 20% 15%;
-  --popover-foreground: 42 36% 95%;
-  --popover-border: 153 17% 27%;
-
-  --primary: 96 42% 61%; /* Pistachio #93C572 */
-  --primary-foreground: 157 22% 15%;
-
-  --secondary: 153 17% 22%;
-  --secondary-foreground: 42 36% 95%;
-
-  --muted: 153 17% 22%;
-  --muted-foreground: 42 15% 70%;
-
-  --accent: 96 42% 61%; /* Pistachio #93C572 */
-  --accent-foreground: 157 22% 15%;
-
-  --destructive: 6 63% 58%;
-  --destructive-foreground: 42 36% 95%;
-
-  --input: 153 17% 32%;
-  --ring: 96 42% 61%; /* Pistachio #93C572 */
-  --chart-1: 96 42% 61%;
-  --chart-2: 44 73% 55%;
-  --chart-3: 188 34% 55%;
-  --chart-4: 88 32% 53%;
-  --chart-5: 96 42% 61%;
-
-  --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
-  --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
-  --shadow-sm:
-    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
-    0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
-  --shadow:
-    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
-    0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0);
-  --shadow-md:
-    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
-    0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0);
-  --shadow-lg:
-    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
-    0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0);
-  --shadow-xl:
-    0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0),
-    0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0);
-  --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
-}
 
 @layer base {
   * {
@@ -707,75 +634,20 @@ input[type='range']::-moz-range-thumb:hover {
 .stagger-6 { animation-delay: 420ms; }
 
 /* ========================================================
-   PISTACHIO #93C572 ACCENT THEME
-   Keeps the original background colors exactly how they were,
-   while converting normal green into Pistachio #93C572.
+   PISTACHIO #93C572 ACCENTS
    ======================================================== */
 
-.dark ::selection,
 ::selection {
   background-color: #93C572;
-  color: #0f172a;
-}
-
-/* Green text highlights to Pistachio #93C572 */
-.dark .text-emerald-400,
-.dark .text-emerald-300,
-.dark .text-emerald-200,
-.dark .dark\:text-emerald-400,
-.dark .dark\:text-emerald-300,
-.dark .dark\:text-emerald-200 {
-  color: #93C572 !important;
-}
-
-/* Active navigation tab & buttons to Pistachio */
-.dark nav button.bg-emerald-700,
-.dark nav button.dark\:bg-emerald-600 {
-  background-color: #93C572 !important;
-  color: #0f172a !important;
-}
-
-.dark nav button.bg-emerald-700 svg,
-.dark nav button.dark\:bg-emerald-600 svg {
-  color: #0f172a !important;
-}
-
-/* Green borders to Pistachio */
-.dark .border-emerald-500,
-.dark .border-emerald-600,
-.dark .dark\:border-emerald-500,
-.dark .dark\:border-emerald-600 {
-  border-color: #93C572 !important;
-}
-
-.dark .border-emerald-500\/30,
-.dark .border-emerald-500\/40,
-.dark .dark\:border-emerald-500\/30,
-.dark .dark\:border-emerald-500\/40,
-.dark .dark\:border-emerald-600\/40 {
-  border-color: rgba(147, 197, 114, 0.4) !important;
-}
-
-/* Sub-badges and translucent green pills to Pistachio */
-.dark .dark\:bg-emerald-950\/60,
-.dark .dark\:bg-emerald-950\/70,
-.dark .dark\:bg-emerald-950\/80,
-.dark .dark\:bg-emerald-950 {
-  background-color: rgba(147, 197, 114, 0.16) !important;
-}
-
-.dark .dark\:text-emerald-300 {
-  color: #93C572 !important;
+  color: #14351a;
 }
 
 /* AI Chat Box launcher gradient with Pistachio #93C572 */
-.dark .from-emerald-700.via-emerald-600.to-green-500,
 .from-emerald-700.via-emerald-600.to-green-500 {
-  background-image: linear-gradient(to top right, #729e50, #88bc64, #93C572) !important;
-  color: #0f172a !important;
+  background-image: linear-gradient(to top right, #6d9a4e, #82b561, #93C572) !important;
+  color: #ffffff !important;
 }
 
-.dark .from-emerald-500.via-green-400.to-amber-400,
 .from-emerald-500.via-green-400.to-amber-400 {
   background-image: linear-gradient(to right, #93C572, #a8d787, #f59e0b) !important;
 }

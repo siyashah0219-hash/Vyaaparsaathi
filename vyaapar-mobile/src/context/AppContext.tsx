@@ -47,9 +47,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [activeTab, setActiveTab] = useState<MobileTab>('home');
 
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    return localStorage.getItem('vypaar_mobile_theme') === 'dark';
-  });
+  const isDarkMode = false;
+  const toggleDarkMode = () => {};
 
   const [financialInput, setFinancialInput] = useState<FinancialPlanInput>({
     startupCost: 150000,
@@ -89,14 +88,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [expertBookings]);
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('vypaar_mobile_theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('vypaar_mobile_theme', 'light');
+    try {
+      localStorage.removeItem('vypaar_mobile_theme');
+    } catch {
+      // Ignore
     }
-  }, [isDarkMode]);
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
   const updateProfile = (updates: Partial<BusinessProfile>) => {
     setProfile((prev) => ({ ...prev, ...updates }));
@@ -110,10 +110,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const addExpertBooking = (booking: ExpertBooking) => {
     setExpertBookings((prev) => [booking, ...prev]);
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => !prev);
   };
 
   return (

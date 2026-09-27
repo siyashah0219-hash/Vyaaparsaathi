@@ -16,7 +16,7 @@ const MainLayout: React.FC = () => {
   const { activeTab } = useApp();
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col max-w-md mx-auto relative shadow-2xl overflow-x-hidden">
+    <div className="min-h-screen bg-slate-100 text-slate-900 flex flex-col max-w-md mx-auto relative shadow-2xl overflow-x-hidden">
       {/* Mobile Sticky Header */}
       <MobileHeader />
 

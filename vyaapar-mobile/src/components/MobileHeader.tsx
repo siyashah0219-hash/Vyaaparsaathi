@@ -3,8 +3,6 @@ import { useApp } from '../context/AppContext';
 import {
   MapPin,
   Globe,
-  Moon,
-  Sun,
   Bell,
   Sparkles,
   ChevronDown,
@@ -12,7 +10,7 @@ import {
 import { Language } from '../types';
 
 export const MobileHeader: React.FC = () => {
-  const { profile, language, setLanguage, isDarkMode, toggleDarkMode, setActiveTab, unreadNotifications } = useApp();
+  const { profile, language, setLanguage, setActiveTab, unreadNotifications } = useApp();
   const [showLangMenu, setShowLangMenu] = useState(false);
 
   const languages: Language[] = ['English', 'Hindi', 'Marathi'];
@@ -83,15 +81,6 @@ export const MobileHeader: React.FC = () => {
               </div>
             )}
           </div>
-
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleDarkMode}
-            className="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 touch-bounce"
-            title="Toggle Theme"
-          >
-            {isDarkMode ? <Sun className="h-4 w-4 text-amber-400" /> : <Moon className="h-4 w-4 text-slate-600" />}
-          </button>
 
           {/* User Profile Avatar */}
           <button
