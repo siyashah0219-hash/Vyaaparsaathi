@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { sendQueryToAIAdvisor } from '../services/apiService';
+import { sendQueryToAIAdvisor, getActiveGeminiApiKey, setLocalGeminiApiKey } from '../services/apiService';
 import {
   Send,
   Mic,
@@ -13,6 +13,9 @@ import {
   Trash2,
   ExternalLink,
   ChevronRight,
+  Key,
+  Check,
+  X,
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -25,12 +28,17 @@ interface ChatMessage {
 }
 
 export const AIChatView: React.FC = () => {
-  const { profile, language, setActiveTab } = useApp();
+  const { profile, language, setActiveTab, financialResult } = useApp();
 
   const [inputMessage, setInputMessage] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
+
+  // Gemini API Key State
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [apiKeyInput, setApiKeyInput] = useState('');
+  const [activeApiKey, setActiveApiKey] = useState<string>(() => getActiveGeminiApiKey());
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -130,7 +138,11 @@ export const AIChatView: React.FC = () => {
     setIsThinking(true);
 
     try {
-      const aiReplyText = await sendQueryToAIAdvisor(textToSend, profile, language);
+      const history = messages.slice(-6).map((m) => ({
+        sender: m.sender,
+        text: m.text,
+      }));
+      const aiReplyText = await sendQueryToAIAdvisor(textToSend, history, profile, financialResult, language);
       const assistantMsg: ChatMessage = {
         id: `ai-${Date.now()}`,
         sender: 'assistant',
@@ -180,7 +192,9 @@ export const AIChatView: React.FC = () => {
           <div>
             <h2 className="text-xs font-bold text-white flex items-center gap-1.5">
               <span>Vypaar Saathi AI</span>
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full ${activeApiKey ? 'bg-amber-400 text-emerald-950' : 'bg-emerald-800 text-emerald-200'}`}>
+                {activeApiKey ? 'Gemini AI' : 'Online'}
+              </span>
             </h2>
             <p className="text-[10px] text-emerald-300">
               {profile.businessCategory} • {profile.district}
@@ -188,14 +202,91 @@ export const AIChatView: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={clearChat}
-          className="p-1.5 rounded-lg text-emerald-300 hover:text-white hover:bg-emerald-800"
-          title="Clear chat"
-        >
-          <Trash2 className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-1">
+          {/* Key configuration button */}
+          <button
+            onClick={() => {
+              setApiKeyInput(activeApiKey);
+              setShowApiKeyModal((prev) => !prev);
+            }}
+            className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 ${
+              activeApiKey
+                ? 'bg-emerald-900 border border-emerald-700 text-amber-300'
+                : 'bg-amber-400 text-emerald-950 font-bold'
+            }`}
+            title={activeApiKey ? 'Gemini Key Connected' : 'Set Gemini Key'}
+          >
+            <Key className="h-3.5 w-3.5" />
+            {!activeApiKey && <span className="text-[9px]">Key</span>}
+          </button>
+
+          <button
+            onClick={clearChat}
+            className="p-1.5 rounded-lg text-emerald-300 hover:text-white hover:bg-emerald-800"
+            title="Clear chat"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Gemini API Key Configuration Drawer */}
+      {showApiKeyModal && (
+        <div className="p-3 bg-emerald-900 text-white border-b border-emerald-700 animate-fade-in-up space-y-2 z-10 text-xs">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 font-bold">
+              <Key className="h-3.5 w-3.5 text-amber-300" />
+              <span>Google Gemini API Key</span>
+            </div>
+            <button onClick={() => setShowApiKeyModal(false)} className="text-emerald-300 hover:text-white">
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <input
+            type="password"
+            value={apiKeyInput}
+            onChange={(e) => setApiKeyInput(e.target.value)}
+            placeholder="Paste Gemini API key (AIzaSy...)"
+            className="w-full text-xs px-2.5 py-1.5 rounded-lg bg-emerald-950 border border-emerald-600 text-white placeholder-emerald-400/60 focus:outline-none focus:ring-1 focus:ring-amber-400 font-mono"
+          />
+          <div className="flex items-center justify-between">
+            <a
+              href="https://aistudio.google.com/app/apikey"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-300 hover:underline text-[10px] flex items-center gap-1"
+            >
+              <span>Get free key</span>
+              <ExternalLink className="h-2.5 w-2.5" />
+            </a>
+            <div className="flex items-center gap-1.5">
+              {activeApiKey && (
+                <button
+                  onClick={() => {
+                    setLocalGeminiApiKey('');
+                    setActiveApiKey('');
+                    setApiKeyInput('');
+                    setShowApiKeyModal(false);
+                  }}
+                  className="text-[10px] px-2 py-1 rounded border border-red-400/40 text-red-300"
+                >
+                  Clear
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  setLocalGeminiApiKey(apiKeyInput.trim());
+                  setActiveApiKey(getActiveGeminiApiKey());
+                  setShowApiKeyModal(false);
+                }}
+                className="text-[10px] font-bold px-3 py-1 rounded bg-amber-400 text-emerald-950 shadow-xs"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quick Prompts Bar */}
       <div className="bg-emerald-50/80 dark:bg-slate-800/80 px-3 py-1.5 overflow-x-auto flex items-center gap-1.5 no-scrollbar border-b border-emerald-100 dark:border-slate-700">

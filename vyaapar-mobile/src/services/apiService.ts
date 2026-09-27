@@ -94,37 +94,37 @@ export async function fetchLiveMandiPrices(
   ];
 }
 
-// Live AI Advisor API Service Integration
-export async function sendQueryToAIAdvisor(
-  message: string,
-  history: { sender: 'user' | 'assistant'; text: string }[],
-  profile: BusinessProfile,
-  financialPlan?: FinancialPlanResult
-): Promise<string> {
+// Gemini API Key Management
+const LOCAL_GEMINI_KEY = 'vypaar_gemini_api_key';
+
+export function getActiveGeminiApiKey(): string {
   try {
-    // Attempting fetch to backend AI service or Gemini API endpoint if configured
-    const response = await fetch('/api/advisor/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message,
-        history,
-        profile,
-        financialPlan,
-      }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      if (data && data.reply) {
-        return data.reply;
-      }
-    }
-  } catch (err) {
-    console.warn('Backend AI service endpoint unavailable, using intelligent client-side AI response generator', err);
+    const localKey = localStorage.getItem(LOCAL_GEMINI_KEY);
+    if (localKey && localKey.trim()) return localKey.trim();
+  } catch {
+    // Ignore
   }
+  return (((import.meta as any).env?.VITE_GEMINI_API_KEY as string) || '').trim();
+}
 
-  // Intelligent Context-Aware Fallback Engine
+export function setLocalGeminiApiKey(key: string): void {
+  try {
+    if (key && key.trim()) {
+      localStorage.setItem(LOCAL_GEMINI_KEY, key.trim());
+    } else {
+      localStorage.removeItem(LOCAL_GEMINI_KEY);
+    }
+  } catch (e) {
+    console.warn('Could not save Gemini API key', e);
+  }
+}
+
+export function hasActiveGeminiApiKey(): boolean {
+  return Boolean(getActiveGeminiApiKey());
+}
+
+// Local Context-Aware Knowledge Engine (Used as Fallback)
+function getLocalFallbackAdvice(message: string, profile: BusinessProfile): string {
   const q = message.toLowerCase();
 
   if (q.includes('mudra') || q.includes('loan') || q.includes('bank') || q.includes('collateral')) {
@@ -144,4 +144,151 @@ export async function sendQueryToAIAdvisor(
   }
 
   return `Based on your business profile in ${profile.villageCity || profile.district} (${profile.state}), operating a ${profile.businessCategory} with ₹${profile.capital.toLocaleString('en-IN')} capital: Focus on building a steady customer base of local households, capping customer credit at ₹1,500, and keeping a 2-month expense emergency fund.`;
+}
+
+// Live Call to Google Gemini API
+async function callGeminiAdvisor(
+  message: string,
+  history: { sender: 'user' | 'assistant'; text: string }[],
+  profile: BusinessProfile,
+  financialPlan?: FinancialPlanResult,
+  language: string = 'English'
+): Promise<string> {
+  const apiKey = getActiveGeminiApiKey();
+  if (!apiKey) {
+    throw new Error('NO_API_KEY');
+  }
+
+  const systemInstruction = `You are "KisanBiz AI & Vypaar Saathi" (व्यापार साथी), a trusted, highly knowledgeable, and practical rural business and agricultural financial advisor in India.
+Your mission is to guide Indian farmers, rural micro-entrepreneurs, dairy owners, self-help groups (SHGs), and agri-business owners into profitable, bankable enterprises.
+
+Current User Business Profile:
+- Owner Name: ${profile.name}
+- Business Category: ${profile.businessCategory}
+- Business Type: ${profile.businessType} (${profile.businessType === 'new' ? 'New Startup' : 'Existing Business'})
+- Location: ${profile.villageCity || 'Local Village/Town'}, District: ${profile.district}, State: ${profile.state}
+- Available Capital: ₹${profile.capital.toLocaleString('en-IN')}
+- Current Monthly Sales: ₹${profile.monthlySales.toLocaleString('en-IN')}
+- Current Monthly Expenses: ₹${profile.monthlyExpenses.toLocaleString('en-IN')}
+- Experience: ${profile.experienceYears} years
+- Business Goal: ${profile.businessGoal || 'Sustainable Growth and Profitability'}
+
+Financial Context:
+${
+  financialPlan
+    ? `- Term Loan Needed: ₹${financialPlan.termLoanNeeded.toLocaleString('en-IN')}
+- Estimated Monthly EMI: ₹${financialPlan.monthlyEMI.toLocaleString('en-IN')}
+- Estimated Monthly Net Profit: ₹${financialPlan.monthlyNetProfit.toLocaleString('en-IN')}
+- Monthly Break-Even Sales: ₹${financialPlan.breakEvenSalesMonthly.toLocaleString('en-IN')}
+- Break-Even Period: ${financialPlan.breakEvenMonths} Months
+- Debt Service Coverage Ratio (DSCR): ${financialPlan.dscr} (Status: ${financialPlan.dscrStatus})`
+    : 'Standard rural enterprise financial assessment applied.'
+}
+
+Government Schemes & Knowledge to Leverage:
+1. PM MUDRA Yojana: Shishu (up to ₹50,000), Kishore (₹50k to ₹5L), Tarun (₹5L to ₹10L) collateral-free loans.
+2. PMFME (PM Formalisation of Micro food processing Enterprises): 35% credit-linked capital subsidy up to ₹10 Lakhs.
+3. Agriculture Infrastructure Fund (AIF): 3% interest subvention for post-harvest storage and processing units.
+4. KCC (Kisan Credit Card) & NABARD schemes for allied agri & dairy.
+
+Style Guidelines:
+- Be warm, encouraging, and respectful ("Namaskar", polite tone).
+- Provide structured, practical advice with actionable steps and bullet points.
+- If relevant, mention specific documents needed (Aadhaar, PAN, Udyam Registration, Bank statement, DPR).
+- Respond in the language requested: ${language} (or if user asked in Hindi or Marathi, reply naturally in that language).
+- Keep answers concise, clear, and direct without unnecessary fluff.`;
+
+  // Build conversational turns for Gemini
+  const contents: { role: 'user' | 'model'; parts: { text: string }[] }[] = [];
+
+  // Recent messages (last 6 to maintain context within token limits)
+  const recentHistory = history.slice(-6);
+  for (const h of recentHistory) {
+    contents.push({
+      role: h.sender === 'user' ? 'user' : 'model',
+      parts: [{ text: h.text }],
+    });
+  }
+
+  // Current turn
+  contents.push({
+    role: 'user',
+    parts: [{ text: message }],
+  });
+
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+  let lastError: any = null;
+
+  for (const model of modelsToTry) {
+    try {
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(
+        apiKey
+      )}`;
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: systemInstruction }],
+          },
+          contents,
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 1024,
+          },
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        console.warn(`Gemini API error with model ${model}:`, errorData);
+        lastError = errorData;
+        continue;
+      }
+
+      const data = await res.json();
+      const generatedText =
+        data?.candidates?.[0]?.content?.parts?.map((p: any) => p.text).join('') || '';
+
+      if (generatedText) {
+        return generatedText;
+      }
+    } catch (e) {
+      console.warn(`Network/fetch failure with model ${model}:`, e);
+      lastError = e;
+    }
+  }
+
+  throw lastError || new Error('Failed to generate response from Gemini API');
+}
+
+// Live AI Advisor API Service Integration
+export async function sendQueryToAIAdvisor(
+  message: string,
+  history: { sender: 'user' | 'assistant'; text: string }[],
+  profile: BusinessProfile,
+  financialPlan?: FinancialPlanResult,
+  language: string = 'English'
+): Promise<string> {
+  const apiKey = getActiveGeminiApiKey();
+
+  if (apiKey) {
+    try {
+      return await callGeminiAdvisor(message, history, profile, financialPlan, language);
+    } catch (err: any) {
+      console.warn('Gemini API call failed, falling back to local advisor engine:', err);
+      const errMsg = err?.error?.message || err?.message || '';
+      if (
+        errMsg.toLowerCase().includes('api_key') ||
+        errMsg.toLowerCase().includes('unauthenticated') ||
+        errMsg.toLowerCase().includes('permission')
+      ) {
+        return `⚠️ The Gemini API key provided appears invalid or unauthorized (${errMsg}). Please check or update your key.\n\nMeanwhile, here is guidance for your ${profile.businessCategory}:\n\n${getLocalFallbackAdvice(message, profile)}`;
+      }
+    }
+  }
+
+  // Intelligent Context-Aware Fallback Engine
+  return getLocalFallbackAdvice(message, profile);
 }

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { sendQueryToAIAdvisor } from '../services/apiService';
+import { sendQueryToAIAdvisor, getActiveGeminiApiKey, setLocalGeminiApiKey } from '../services/apiService';
 import {
   MessageSquare,
   X,
@@ -19,6 +19,9 @@ import {
   ChevronDown,
   Globe,
   HelpCircle,
+  Key,
+  Check,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -39,6 +42,12 @@ export const AIChatBox: React.FC = () => {
   const [isThinking, setIsThinking] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
+
+  // Gemini API Key State
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [apiKeyInput, setApiKeyInput] = useState('');
+  const [activeApiKey, setActiveApiKey] = useState<string>(() => getActiveGeminiApiKey());
+  const [keySavedNotification, setKeySavedNotification] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -148,7 +157,7 @@ export const AIChatBox: React.FC = () => {
         text: m.text,
       }));
 
-      const reply = await sendQueryToAIAdvisor(text, history, profile, financialResult);
+      const reply = await sendQueryToAIAdvisor(text, history, profile, financialResult, language);
 
       let actionTab = autoActionTab;
       let actionLabel = autoActionLabel;
@@ -258,8 +267,15 @@ export const AIChatBox: React.FC = () => {
                   <h3 className="font-serif font-bold text-sm tracking-tight text-white">
                     {t('chat.helperName')}
                   </h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-emerald-950">
-                    Online
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 ${
+                      activeApiKey
+                        ? 'bg-amber-400 text-emerald-950 font-bold'
+                        : 'bg-emerald-700/80 text-emerald-100'
+                    }`}
+                  >
+                    {activeApiKey ? <Sparkles className="h-2.5 w-2.5" /> : null}
+                    {activeApiKey ? 'Gemini AI Active' : 'Advisor Online'}
                   </span>
                 </div>
                 <p className="text-[11px] text-emerald-200 truncate max-w-[210px]">
@@ -270,6 +286,23 @@ export const AIChatBox: React.FC = () => {
 
             {/* Header Controls */}
             <div className="flex items-center gap-1">
+              {/* Gemini API Key Configuration Button */}
+              <button
+                onClick={() => {
+                  setApiKeyInput(activeApiKey);
+                  setShowApiKeyModal((prev) => !prev);
+                }}
+                className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 ${
+                  activeApiKey
+                    ? 'bg-emerald-950/40 hover:bg-emerald-950/70 border border-emerald-700/60 text-amber-300'
+                    : 'bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold shadow-xs'
+                }`}
+                title={activeApiKey ? 'Gemini API Key Connected (Click to edit)' : 'Configure Gemini API Key'}
+              >
+                <Key className="h-4 w-4" />
+                {!activeApiKey && <span className="text-[10px] pr-0.5 hidden sm:inline">Set Key</span>}
+              </button>
+
               {/* Language Switch */}
               <button
                 onClick={() => {
@@ -310,6 +343,100 @@ export const AIChatBox: React.FC = () => {
               </button>
             </div>
           </div>
+
+          {/* Gemini API Key Configuration Card */}
+          {showApiKeyModal && (
+            <div className="p-3.5 bg-emerald-950 text-white border-b border-emerald-700/80 animate-fade-in-up space-y-2.5 z-20">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-emerald-800/80 text-amber-300">
+                    <Key className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xs text-white">Google Gemini API Key</h4>
+                    <p className="text-[10px] text-emerald-200">
+                      Connect live Gemini AI for real-time rural financial & subsidy advice
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowApiKeyModal(false)}
+                  className="text-emerald-300 hover:text-white p-1 rounded-md"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="space-y-1.5">
+                <input
+                  type="password"
+                  value={apiKeyInput}
+                  onChange={(e) => setApiKeyInput(e.target.value)}
+                  placeholder="Paste your Gemini API key (AIzaSy...)"
+                  className="w-full text-xs px-3 py-2 rounded-xl bg-emerald-900/90 border border-emerald-600/80 text-white placeholder-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-amber-400 font-mono"
+                />
+                <div className="flex items-center justify-between text-[11px] pt-0.5">
+                  <a
+                    href="https://aistudio.google.com/app/apikey"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-300 hover:text-amber-200 hover:underline flex items-center gap-1 font-medium text-[10px]"
+                  >
+                    <span>Get a free key at Google AI Studio</span>
+                    <ExternalLink className="h-2.5 w-2.5" />
+                  </a>
+                  {activeApiKey ? (
+                    <span className="text-emerald-300 text-[10px] font-bold flex items-center gap-1">
+                      <Check className="h-3 w-3 text-emerald-400" /> Active
+                    </span>
+                  ) : (
+                    <span className="text-amber-300/80 text-[10px]">Using local fallback</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-1">
+                {activeApiKey && (
+                  <button
+                    onClick={() => {
+                      setLocalGeminiApiKey('');
+                      setActiveApiKey('');
+                      setApiKeyInput('');
+                      setShowApiKeyModal(false);
+                    }}
+                    className="text-[11px] px-3 py-1.5 rounded-xl border border-red-400/40 text-red-300 hover:bg-red-950/60 cursor-pointer"
+                  >
+                    Remove Key
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setLocalGeminiApiKey(apiKeyInput.trim());
+                    setActiveApiKey(getActiveGeminiApiKey());
+                    setKeySavedNotification(true);
+                    setTimeout(() => setKeySavedNotification(false), 3000);
+                    setShowApiKeyModal(false);
+                  }}
+                  className="text-[11px] font-bold px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-emerald-950 shadow-md transition-all cursor-pointer"
+                >
+                  Save & Connect
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Key Saved Success Banner */}
+          {keySavedNotification && (
+            <div className="bg-emerald-700 text-white px-3 py-1.5 text-xs flex items-center justify-between animate-fade-in-up">
+              <span className="flex items-center gap-1.5 font-bold">
+                <Check className="h-3.5 w-3.5 text-amber-300" />
+                Gemini API Key activated successfully!
+              </span>
+              <button onClick={() => setKeySavedNotification(false)}>
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
 
           {/* Quick Prompts Carousel Bar */}
           <div className="bg-emerald-50/70 dark:bg-slate-800/60 border-b border-emerald-100 dark:border-slate-800 px-3 py-2 overflow-x-auto flex items-center gap-2 no-scrollbar">
