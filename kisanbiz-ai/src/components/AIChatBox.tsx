@@ -31,7 +31,7 @@ interface ChatMessage {
 }
 
 export const AIChatBox: React.FC = () => {
-  const { profile, financialResult, activeTab, setActiveTab, language, setLanguage } = useApp();
+  const { profile, financialResult, activeTab, setActiveTab, language, setLanguage, t } = useApp();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -212,22 +212,27 @@ export const AIChatBox: React.FC = () => {
   return (
     <>
       {/* Floating Trigger Button (Single clean bot button on bottom right) */}
+      {/* Floating Trigger Button with AI Chat Box Helper Label */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-50 animate-fade-in-up">
-          {/* Main Bubble Icon Button with Glow Aura and Float */}
           <div className="relative group">
             {/* Glowing Aura Ring */}
             <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-emerald-500 via-green-400 to-amber-400 opacity-75 blur-md group-hover:opacity-100 animate-pulse-glow transition-all duration-300"></div>
 
             <button
               onClick={() => setIsOpen(true)}
-              aria-label="Open KisanBiz AI Chat Assistant"
-              className="relative h-14 w-14 rounded-full bg-gradient-to-tr from-emerald-700 via-emerald-600 to-green-500 text-white flex items-center justify-center shadow-2xl shadow-emerald-700/50 hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-emerald-400/40"
+              aria-label="Open AI Chat Box Helper"
+              className="relative flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-tr from-emerald-700 via-emerald-600 to-green-500 text-white shadow-2xl shadow-emerald-700/50 hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-emerald-400/40 cursor-pointer border border-emerald-400/30"
             >
-              <Bot className="h-7 w-7 transition-transform group-hover:rotate-12 duration-300" />
-              <div className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-amber-400 border-2 border-white dark:border-slate-900 flex items-center justify-center animate-bounce">
-                <Sparkles className="h-2.5 w-2.5 text-emerald-950" />
+              <div className="relative flex items-center justify-center">
+                <Bot className="h-6 w-6 sm:h-7 sm:w-7 transition-transform group-hover:rotate-12 duration-300" />
+                <div className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-amber-400 border-2 border-white dark:border-slate-900 flex items-center justify-center animate-bounce">
+                  <Sparkles className="h-2 w-2 text-emerald-950" />
+                </div>
               </div>
+              <span className="font-bold text-xs sm:text-sm tracking-wide whitespace-nowrap drop-shadow-xs">
+                {t('chat.helperName')}
+              </span>
             </button>
           </div>
         </div>
@@ -252,7 +257,7 @@ export const AIChatBox: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="font-serif font-bold text-sm tracking-tight text-white">
-                    VYPAAR SAATHI AI
+                    {t('chat.helperName')}
                   </h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-emerald-950">
                     Online
