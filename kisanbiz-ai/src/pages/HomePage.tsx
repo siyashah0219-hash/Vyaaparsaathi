@@ -379,47 +379,6 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* User Journey Roadmap Visualization */}
-      <section className="bg-emerald-50 dark:bg-slate-900/80 border border-emerald-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
-        <div className="text-center max-w-2xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-300 dark:border-emerald-800">
-            End-to-End Workflow
-          </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-emerald-950 dark:text-slate-100 mt-2">
-            The Complete VYPAAR SAATHI User Journey
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">
-            Follow this step-by-step path designed specifically for rural micro-entrepreneurs.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 2xl:grid-cols-8 gap-3 2xl:gap-4 pt-2">
-          {[
-            { step: '1', title: 'Business Profile', desc: '5-Step Form', tab: 'profile' },
-            { step: '2', title: 'Local Analysis', desc: 'Market & Demand', tab: 'analyze' },
-            { step: '3', title: 'Financial Plan', desc: 'EMI & Cash Flow', tab: 'financial-plan' },
-            { step: '4', title: 'Risk Analysis', desc: 'Mitigation Matrix', tab: 'risk-analysis' },
-            { step: '5', title: 'Govt Schemes', desc: 'MUDRA & PMFME', tab: 'schemes' },
-            { step: '6', title: 'AI Advisor', desc: 'Voice & Text', tab: 'advisor' },
-            { step: '7', title: 'Action Plan', desc: '30-60-90 Roadmap', tab: 'action-plan' },
-            { step: '8', title: 'Expert Session', desc: '1-on-1 Mentorship', tab: 'expert-session' },
-          ].map((item) => (
-            <button
-              key={item.step}
-              onClick={() => setActiveTab(item.tab as any)}
-              className="flex flex-col items-center p-3.5 bg-white dark:bg-slate-800 rounded-xl border border-emerald-200 dark:border-slate-700 hover:border-emerald-500 hover:bg-emerald-100/50 dark:hover:bg-slate-750 transition-all text-center shadow-2xs group hover-card-lift cursor-pointer"
-            >
-              <span className="h-7 w-7 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center group-hover:bg-amber-400 group-hover:text-emerald-950 transition-all group-hover:scale-120 duration-300">
-                {item.step}
-              </span>
-              <span className="font-bold text-xs text-emerald-950 dark:text-slate-200 mt-2 group-hover:text-emerald-800 dark:group-hover:text-emerald-300 transition-colors">
-                {item.title}
-              </span>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400">{item.desc}</span>
-            </button>
-          ))}
-        </div>
-      </section>
 
       {/* Helpline Contact Card with Shimmer & Floating Glow */}
       <section className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 rounded-3xl p-6 sm:p-8 text-emerald-950 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 hover-card-lift">
