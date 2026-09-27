@@ -20,7 +20,7 @@ const MainContent: React.FC = () => {
   const { activeTab, isAuthModalOpen, closeAuthModal } = useApp();
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-gradient-to-br from-emerald-50/40 via-slate-50 to-amber-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950/40 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-200">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-gradient-to-br from-emerald-50/40 via-slate-50 to-amber-50/30 dark:from-[#0e160a] dark:via-[#142010] dark:to-[#1a2915] text-slate-900 dark:text-[#f2f7ef] font-sans antialiased selection:bg-[#93C572] selection:text-[#0e160a] transition-colors duration-200">
       <Navbar />
 
       <main className="flex-1 max-w-[1820px] w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-16 py-5 sm:py-7 transition-all">

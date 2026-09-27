@@ -237,68 +237,51 @@ body {
   --elevate-1: rgba(255, 255, 255, 0.04);
   --elevate-2: rgba(255, 255, 255, 0.09);
 
-  --background: 157 22% 11%;
+  /* Pistachio #93C572 Dark Theme */
+  --background: 96 32% 7%;
+  --foreground: 96 25% 95%;
 
-  --foreground: 42 36% 95%;
+  --border: 96 20% 20%;
 
-  --border: 153 17% 27%;
+  --card: 96 25% 11%;
+  --card-foreground: 96 25% 95%;
+  --card-border: 96 20% 20%;
 
-  --card: 157 20% 15%;
+  --sidebar: 96 35% 6%;
+  --sidebar-foreground: 96 25% 95%;
+  --sidebar-border: 96 20% 16%;
+  --sidebar-primary: 96 42% 61%; /* Pistachio #93C572 */
+  --sidebar-primary-foreground: 96 35% 10%;
+  --sidebar-accent: 96 22% 16%;
+  --sidebar-accent-foreground: 96 25% 95%;
+  --sidebar-ring: 96 42% 61%;
 
-  --card-foreground: 42 36% 95%;
+  --popover: 96 25% 11%;
+  --popover-foreground: 96 25% 95%;
+  --popover-border: 96 20% 20%;
 
-  --card-border: 153 17% 27%;
+  --primary: 96 42% 61%; /* Pistachio #93C572 */
+  --primary-foreground: 96 35% 10%;
 
-  --sidebar: 157 25% 9%;
+  --secondary: 96 20% 17%;
+  --secondary-foreground: 96 25% 95%;
 
-  --sidebar-foreground: 42 36% 95%;
+  --muted: 96 20% 16%;
+  --muted-foreground: 96 18% 70%;
 
-  --sidebar-border: 153 17% 22%;
-
-  --sidebar-primary: 44 73% 65%;
-
-  --sidebar-primary-foreground: 157 22% 15%;
-
-  --sidebar-accent: 153 17% 22%;
-
-  --sidebar-accent-foreground: 42 36% 95%;
-
-  --sidebar-ring: 44 73% 65%;
-
-  --popover: 157 20% 15%;
-
-  --popover-foreground: 42 36% 95%;
-
-  --popover-border: 153 17% 27%;
-
-  --primary: 44 73% 65%;
-
-  --primary-foreground: 157 22% 15%;
-
-  --secondary: 153 17% 22%;
-
-  --secondary-foreground: 42 36% 95%;
-
-  --muted: 153 17% 22%;
-
-  --muted-foreground: 42 15% 70%;
-
-  --accent: 21 66% 56%;
-
-  --accent-foreground: 157 22% 15%;
+  --accent: 96 42% 61%; /* Pistachio #93C572 */
+  --accent-foreground: 96 35% 10%;
 
   --destructive: 6 63% 58%;
-
   --destructive-foreground: 42 36% 95%;
 
-  /* Used as the border around inputs. Dark mode: Should be a border that is light enough to have high contrast when rendered on a --card background. More contrast than standard --border */
-  --input: 153 17% 32%;
-  --ring: 44 73% 65%;
-  --chart-1: 44 73% 65%;
-  --chart-2: 21 66% 56%;
-  --chart-3: 188 34% 55%;
-  --chart-4: 88 32% 53%;
-  --chart-5: 153 42% 50%;
+  --input: 96 20% 26%;
+  --ring: 96 42% 61%; /* Pistachio #93C572 */
+  --chart-1: 96 42% 61%;
+  --chart-2: 85 45% 55%;
+  --chart-3: 110 35% 50%;
+  --chart-4: 70 40% 60%;
+  --chart-5: 96 42% 75%;
 
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
   --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
@@ -723,6 +706,89 @@ input[type='range']::-moz-range-thumb:hover {
 .stagger-4 { animation-delay: 280ms; }
 .stagger-5 { animation-delay: 350ms; }
 .stagger-6 { animation-delay: 420ms; }
+
+/* ========================================================
+   PISTACHIO #93C572 DARK THEME STYLING
+   ======================================================== */
+html.dark {
+  background-color: #0e160a;
+  color: #f2f7ef;
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0e160a;
+  color: #f2f7ef;
+}
+
+.dark ::selection {
+  background-color: #93C572;
+  color: #0e160a;
+}
+
+/* Pistachio Dark Theme Surface Adjustments */
+.dark .dark\:bg-slate-950 {
+  background-color: #0e160a !important;
+}
+
+.dark .dark\:bg-slate-900 {
+  background-color: #142010 !important;
+}
+
+.dark .dark\:bg-slate-900\/95,
+.dark .dark\:bg-slate-900\/98,
+.dark .dark\:bg-slate-900\/80 {
+  background-color: rgba(20, 32, 16, 0.96) !important;
+}
+
+.dark .dark\:bg-slate-850,
+.dark .dark\:bg-slate-800 {
+  background-color: #1b2a15 !important;
+}
+
+.dark .dark\:bg-slate-800\/80,
+.dark .dark\:bg-slate-800\/60,
+.dark .dark\:bg-slate-800\/40 {
+  background-color: rgba(27, 42, 21, 0.75) !important;
+}
+
+.dark .dark\:border-slate-800 {
+  border-color: #273b1f !important;
+}
+
+.dark .dark\:border-slate-700 {
+  border-color: #334b29 !important;
+}
+
+.dark .dark\:border-emerald-800,
+.dark .dark\:border-emerald-700 {
+  border-color: #334b29 !important;
+}
+
+.dark .dark\:border-emerald-500,
+.dark .dark\:border-emerald-500\/30,
+.dark .dark\:border-emerald-500\/40 {
+  border-color: rgba(147, 197, 114, 0.45) !important;
+}
+
+.dark .dark\:text-emerald-400,
+.dark .dark\:text-emerald-300,
+.dark .dark\:text-emerald-200 {
+  color: #93C572 !important;
+}
+
+.dark .dark\:bg-emerald-950,
+.dark .dark\:bg-emerald-950\/60,
+.dark .dark\:bg-emerald-950\/70,
+.dark .dark\:bg-emerald-950\/80 {
+  background-color: rgba(147, 197, 114, 0.16) !important;
+}
+
+.dark .dark\:bg-emerald-900,
+.dark .dark\:bg-emerald-900\/40,
+.dark .dark\:bg-emerald-900\/60 {
+  background-color: rgba(147, 197, 114, 0.22) !important;
+}
 
 
 

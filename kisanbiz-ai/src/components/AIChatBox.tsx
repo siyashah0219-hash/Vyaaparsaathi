@@ -211,8 +211,7 @@ export const AIChatBox: React.FC = () => {
 
   return (
     <>
-      {/* Floating Trigger Button (Single clean bot button on bottom right) */}
-      {/* Floating Trigger Button with AI Chat Box Helper Label */}
+      {/* Floating Trigger Button with AI Chat Box Label */}
       {!isOpen && (
         <div className="fixed bottom-6 right-6 z-50 animate-fade-in-up">
           <div className="relative group">
@@ -221,7 +220,7 @@ export const AIChatBox: React.FC = () => {
 
             <button
               onClick={() => setIsOpen(true)}
-              aria-label="Open AI Chat Box Helper"
+              aria-label="Open AI Chat Box"
               className="relative flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-gradient-to-tr from-emerald-700 via-emerald-600 to-green-500 text-white shadow-2xl shadow-emerald-700/50 hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-emerald-400/40 cursor-pointer border border-emerald-400/30"
             >
               <div className="relative flex items-center justify-center">

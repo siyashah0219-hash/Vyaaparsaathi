@@ -67,7 +67,7 @@ export const translations = {
 
     // Chat
     'chat.title': 'KisanBiz AI Assistant',
-    'chat.helperName': 'AI Chat Box Helper',
+    'chat.helperName': 'AI Chat Box',
     'chat.askQuestion': 'Ask your question in English... (or tap mic to speak)',
     'chat.online': 'Online • Ready to Assist',
     'chat.listening': 'Listening to your voice...',
@@ -143,7 +143,7 @@ export const translations = {
 
     // Chat
     'chat.title': 'किसानबिज़ AI सहायक',
-    'chat.helperName': 'AI चैट बॉक्स हेल्पर',
+    'chat.helperName': 'AI चैट बॉक्स',
     'chat.askQuestion': 'हिन्दी में अपना सवाल पूछें... (या माइक दबाकर बोलें)',
     'chat.online': 'ऑनलाइन • सहायता के लिए तैयार',
     'chat.listening': 'आपकी आवाज़ सुन रहे हैं... बोलिए',
@@ -219,7 +219,7 @@ export const translations = {
 
     // Chat
     'chat.title': 'किसानबिझ AI सहाय्यक',
-    'chat.helperName': 'AI चॅट बॉक्स हेल्पर',
+    'chat.helperName': 'AI चॅट बॉक्स',
     'chat.askQuestion': 'मराठीत तुमचा प्रश्न विचारा... (किंवा माइक दाबा)',
     'chat.online': 'ऑनलाइन • मदतीसाठी सज्ज',
     'chat.listening': 'तुमचा आवाज ऐकत आहे... बोला',
