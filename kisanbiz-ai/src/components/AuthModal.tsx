@@ -105,12 +105,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [customPhone, setCustomPhone] = useState('');
   const [customState, setCustomState] = useState('Maharashtra');
   const [customDistrict, setCustomDistrict] = useState('Satara');
-  const [customCategory, setCustomCategory] = useState(businessCategories[0]);
+  const [customCategory, setCustomCategory] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
-  const districts = indianStatesAndDistricts[customState] || indianStatesAndDistricts['Maharashtra'];
+  const districts =
+    indianStatesAndDistricts[customState] ||
+    indianStatesAndDistricts['Maharashtra'] ||
+    [];
 
   const handleSelectDemo = (demo: (typeof DEMO_ACCOUNTS)[0]) => {
     setIsSubmitting(true);
@@ -132,7 +135,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
         state: customState,
         district: customDistrict,
         villageCity: customDistrict,
-        businessCategory: customCategory,
+        businessCategory: customCategory.trim() || 'Dairy & Animal Husbandry',
         businessType: 'new',
         capital: 50000,
         monthlySales: 25000,
@@ -327,17 +330,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                   Business Category / व्यवसाय श्रेणी
                 </label>
-                <select
-                  value={customCategory}
-                  onChange={(e) => setCustomCategory(e.target.value)}
-                  className="w-full px-2.5 py-2 text-xs rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                >
-                  {businessCategories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <Briefcase className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                  <input
+                    type="text"
+                    value={customCategory}
+                    onChange={(e) => setCustomCategory(e.target.value)}
+                    placeholder="e.g. Dairy & Animal Husbandry, Kirana Store"
+                    className="w-full pl-9 pr-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
               </div>
 
               <button

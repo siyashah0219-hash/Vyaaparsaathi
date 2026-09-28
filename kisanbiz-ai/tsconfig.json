@@ -15,9 +15,17 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/components/ui/**/*", "src/components/error-boundary.tsx"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/components/ui/**/*",
+    "src/components/error-boundary.tsx"
+  ]
 }

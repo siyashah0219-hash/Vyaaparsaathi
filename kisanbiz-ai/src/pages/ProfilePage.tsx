@@ -29,7 +29,9 @@ export const ProfilePage: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const availableDistricts =
-    indianStatesAndDistricts[formData.state] || indianStatesAndDistricts['Maharashtra'];
+    indianStatesAndDistricts[formData.state] ||
+    indianStatesAndDistricts['Maharashtra'] ||
+    [];
 
   const handleChange = (field: keyof BusinessProfile, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -61,7 +63,7 @@ export const ProfilePage: React.FC = () => {
       if (!formData.district) errs.district = 'Please select your district.';
       if (!formData.villageCity.trim()) errs.villageCity = 'Please enter your village or town name.';
     } else if (currentStep === 3) {
-      if (!formData.businessCategory) errs.businessCategory = 'Please select a business category.';
+      if (!formData.businessCategory.trim()) errs.businessCategory = 'Please enter a business category.';
       if (!formData.targetCustomers.trim()) errs.targetCustomers = 'Please describe your target customers.';
     } else if (currentStep === 4) {
       if (formData.capital <= 0) errs.capital = 'Available capital must be greater than 0.';
@@ -338,17 +340,18 @@ export const ProfilePage: React.FC = () => {
                 <label className="block text-xs font-bold text-emerald-950 uppercase tracking-wider mb-2">
                   Business Category <span className="text-red-500">*</span>
                 </label>
-                <select
+                <input
+                  type="text"
                   value={formData.businessCategory}
                   onChange={(e) => handleChange('businessCategory', e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15 bg-white font-medium text-emerald-950"
-                >
-                  {businessCategories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
+                  placeholder="e.g. Dairy & Animal Husbandry, Kirana Store, Food Processing"
+                  className={`w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all ${
+                    errors.businessCategory ? 'border-red-500 bg-red-50/30' : 'border-gray-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/15'
+                  } bg-white font-medium text-emerald-950`}
+                />
+                {errors.businessCategory && (
+                  <p className="text-xs text-red-600 mt-1">{errors.businessCategory}</p>
+                )}
               </div>
 
               <div>

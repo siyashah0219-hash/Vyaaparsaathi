@@ -1,0 +1,10 @@
+{
+  "name": "vyaaparsaathi-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix kisanbiz-ai",
+    "build": "npm run build --prefix kisanbiz-ai",
+    "serve": "npm run serve --prefix kisanbiz-ai"
+  }
+}

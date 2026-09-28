@@ -17,22 +17,54 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-      /* Clean hidden styling for Google Translate element and bar */
-      .goog-te-banner-frame.skiptranslate,
+      /* Complete suppression of Google Translate banners, dialog boxes, and tooltips */
       .goog-te-banner-frame,
-      iframe.goog-te-banner-frame {
+      .goog-te-banner-frame.skiptranslate,
+      iframe.goog-te-banner-frame,
+      iframe.goog-te-menu-frame,
+      .goog-te-menu2,
+      #goog-gt-tt,
+      #goog-gt-vt,
+      #goog-gt-votingHiddenPane,
+      .goog-te-balloon-frame,
+      .goog-tooltip,
+      .goog-tooltip:hover,
+      .goog-tooltip-panel,
+      .goog-tooltip-content,
+      .goog-te-spinner-pos,
+      .goog-te-gadget,
+      .goog-te-gadget-simple,
+      [class*="VIpgJd"],
+      [id*="VIpgJd"],
+      [id*="goog-gt"],
+      body > .skiptranslate,
+      iframe.skiptranslate,
+      div.skiptranslate:not(#google_translate_element) {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        max-height: 0 !important;
+        max-width: 0 !important;
+        position: fixed !important;
+        top: -99999px !important;
+        left: -99999px !important;
+        z-index: -99999 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        clip-path: inset(50%) !important;
       }
       body {
         top: 0px !important;
         position: static !important;
       }
-      #goog-gt-tt, .goog-te-balloon-frame {
-        display: none !important;
-      }
       .goog-text-highlight {
         background: none !important;
+        background-color: transparent !important;
         box-shadow: none !important;
+        border: none !important;
       }
       #google_translate_element {
         display: none !important;
@@ -52,6 +84,40 @@
           }, 'google_translate_element');
         }
       }
+
+      // Continuously suppress any Google Translate dialog boxes or layout shifts
+      (function() {
+        function removeGoogleTranslatePopups() {
+          if (document.body && document.body.style.top && document.body.style.top !== '0px') {
+            document.body.style.top = '0px';
+          }
+          var popups = document.querySelectorAll(
+            '#goog-gt-tt, .goog-te-banner-frame, [class*="VIpgJd"], [id*="goog-gt"], .goog-te-balloon-frame, body > .skiptranslate'
+          );
+          for (var i = 0; i < popups.length; i++) {
+            var el = popups[i];
+            if (el && el.style) {
+              el.style.setProperty('display', 'none', 'important');
+              el.style.setProperty('visibility', 'hidden', 'important');
+              el.style.setProperty('opacity', '0', 'important');
+              el.style.setProperty('pointer-events', 'none', 'important');
+            }
+          }
+        }
+
+        if (window.MutationObserver) {
+          var observer = new MutationObserver(removeGoogleTranslatePopups);
+          if (document.documentElement) {
+            observer.observe(document.documentElement, {
+              childList: true,
+              subtree: true,
+              attributes: true,
+              attributeFilter: ['style', 'class']
+            });
+          }
+        }
+        window.addEventListener('load', removeGoogleTranslatePopups);
+      })();
     </script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
     <script type="module" src="/src/main.tsx"></script>

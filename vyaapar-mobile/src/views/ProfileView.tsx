@@ -141,15 +141,13 @@ export const ProfileView: React.FC = () => {
 
         <div>
           <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Business Category</label>
-          <select
+          <input
+            type="text"
             value={formData.businessCategory}
             onChange={(e) => setFormData({ ...formData, businessCategory: e.target.value })}
+            placeholder="e.g. Dairy & Animal Husbandry, Kirana Store"
             className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 outline-none"
-          >
-            {businessCategories.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+          />
         </div>
 
         {/* Business Type */}
